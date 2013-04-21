@@ -26,14 +26,16 @@ USAGE EXAMPLE
 
 Assume you have a paper named ``'foo'`` which compiles from single source
 ``foo.tex``. The paper's current version is ``1.0``. The source file
-``foo.tex`` includes ``bar.tex`` which, in turn, includes ``bar.eps`` image. To
-compile paper and distribute its sources (for editorial manager e.g.) you may
-write simple SCons script::
+``foo.tex`` includes ``bar.tex`` which, in turn, includes ``bar.eps`` image.
+You're unsure, whether LaTeX scanner adds ``bar.eps`` to implicit dependencies
+or not. To compile paper and distribute its sources (for editorial manager
+e.g.) you may write simple SCons script::
 
     # SConstruct
     env = Environment(tools = ['texas'])
     dvi = env.TeXASDVI('foo', version = '1.0', dvi_deps = ['bar.eps']) 
-    tar = env.TeXASTarGz('foo', dvi[0].all_children(), version = '1.0')
+    src = env.TeXASRmDup( dvi[0].children() )
+    tar = env.TeXASTarGz('foo', src, version = '1.0')
 
 You may compile entire project, or just parts of it::
 
