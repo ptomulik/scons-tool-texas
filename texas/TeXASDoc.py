@@ -32,16 +32,7 @@ class _Null(object): pass
 _null = _Null
 
 _local_keywords = TeXASCommon.keywords  + [
-    'dvi_alias',
-    'dvi_alias_suffix',
-    'default_dvi_alias',
-    'default_dvi_alias_suffix',
-    'dvi_deps',
-    'pdf_alias',
-    'pdf_alias_suffix',
-    'default_pdf_alias',
-    'default_pdf_alias_suffix',
-    'pdf_deps',
+    'deps',
     'builder'
 ]
 
@@ -60,27 +51,24 @@ def _builddoc(env, name, source=_null, **kw):
     alias = TeXASCommon.get_auto_alias(name, 'alias', **kw)
     target = TeXASCommon.get_auto_target(env, name, **kw)
     
-    try: dvi_deps = kw['dvi_deps']
-    except KeyError: dvi_deps = None
-
-    try: pdf_deps = kw['dvi_deps']
-    except KeyError: pdf_deps = None
+    try: deps = kw['deps']
+    except KeyError: deps = None
 
     kw = _del_local_keywords(kw)
 
     if builder == 'DVI':
         target = env.DVI(target, source, **kw)
-        if dvi_deps: env.Depends(target, dvi_deps)
+        if deps: env.Depends(target, deps)
     elif builder == 'PDF':
         try: kw['DVIPDFCOM'] = env['TEXASDVIPDFCOM']
         except KeyError: pass
         target = env.PDF(target, source, **kw)
-        if pdf_deps: env.Depends(target, pdf_deps)
+        if deps: env.Depends(target, deps)
     elif builder == 'DVIPDFM':
         try: kw['DVIPDFMCOM'] = env['TEXASDVIPDFMCOM']
         except KeyError: pass
         target = env.DVIPDFM(target, source, **kw)
-        if pdf_deps: env.Depends(target, pdf_deps)
+        if deps: env.Depends(target, deps)
     else:
         raise SCons.Errors.UserError('Unsupported builder: %r' % builder)
     if alias:
@@ -109,10 +97,8 @@ def Doc(env, name, source=_null, **kw):
         builder
             string - name of the builder used to create target, currently
             supported values are ``'DVI'``, ``'PDF'`` and ``'DVIPDFM'``,
-        dvi_deps 
-            extra dependencies for DVI target (used only by DVI builder),
-        pdf_deps 
-            extra dependencies for PDF target (used by PDF and DVIPDFM builders),
+        deps 
+            extra dependencies for target file
         out_dir
             output directory
         suffix
@@ -127,10 +113,6 @@ def Doc(env, name, source=_null, **kw):
     if 'builder' not in kw:
         kw['builder'] = 'DVI'
     
-    # Suffixes are fixed for DVI builder
-    kw['default_dvi_alias_suffix'] = 'dvi'
-    kw['default_dvi_suffix'] = '.dvi'
-
     if kw['builder'] == 'DVI':
         # Suffixes are fixed for DVI builder
         kw['default_alias_suffix'] = 'dvi'
@@ -142,13 +124,6 @@ def Doc(env, name, source=_null, **kw):
             kw['default_suffix'] = env.subst('$PDFSUFFIX')
             if not kw['default_suffix']:
                 kw['default_suffix'] = '.pdf'
-        #
-        kw['default_pdf_alias_suffix'] = 'pdf'
-        try: kw['default_pdf_suffix'] = kw['PDFSUFFIX']
-        except KeyError: 
-            kw['default_pdf_suffix'] = env.subst('$PDFSUFFIX')
-            if not kw['default_pdf_suffix']:
-                kw['default_pdf_suffix'] = '.pdf'
     elif kw['builder'] == 'DVIPDFM':
         kw['default_alias_suffix'] = 'pdf'
         try: kw['default_suffix'] = kw['DVIPDFMSUFFIX']
@@ -156,13 +131,6 @@ def Doc(env, name, source=_null, **kw):
             kw['default_suffix'] = env.subst('$DVIPDFMSUFFIX')
             if not kw['default_suffix']:
                 kw['default_suffix'] = '.pdf'
-        #
-        kw['default_pdf_alias_suffix'] = 'pdf'
-        try: kw['default_pdf_suffix'] = kw['DVIPDFMSUFFIX']
-        except KeyError: 
-            kw['default_pdf_suffix'] = env.subst('$DVIPDFMSUFFIX')
-            if not kw['default_pdf_suffix']:
-                kw['default_pdf_suffix'] = '.pdf'
     else:
         raise SCons.Errors.UserError('Unsupported builder: %r' % repr(builder))
 
@@ -187,7 +155,7 @@ def DVI(env, name, source=_null, **kw):
             create any alias set ``alias=None``,
         alias_suffix
             alias suffix to be used instead of the default ``dvi`` alias suffix,
-        dvi_deps 
+        deps 
             extra dependencies for DVI target,
         out_dir
             output directory
@@ -223,7 +191,7 @@ def PDF(env, name, source=_null, **kw):
             create any alias set ``alias=None``,
         alias_suffix
             alias suffix to be used instead of the default ``dvi`` alias suffix,
-        pdf_deps
+        deps
             extra dependencies for PDF target,
         out_dir
             output directory
@@ -260,8 +228,8 @@ def DVIPDFM(env, name, source=_null, **kw):
             create any alias set ``alias=None``,
         alias_suffix
             alias suffix to be used instead of the default ``dvi`` alias suffix,
-        pdf_deps
-            extra dependencies for DVI target,
+        deps
+            extra dependencies for PDF target,
         out_dir
             output directory
         suffix

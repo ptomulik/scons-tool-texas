@@ -1,0 +1,3 @@
+<?xml version="1.0" ?>
+<locatingRules xmlns="http://thaiopensource.com/ns/locating-rules/1.0">
+<uri resource="file:/home/ptomulik/projects/scons-tool-texas/doc/user/manual.xml" typeId="DOCBOOK5"/><include rules="file:/home/ptomulik/.jedit/plugins/xml.XmlPlugin/schemas.xml" /><include rules="jeditresource:/XML.jar!/xml/dtds/schemas.xml" /></locatingRules>

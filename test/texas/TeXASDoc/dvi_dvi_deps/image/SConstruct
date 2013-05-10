@@ -21,7 +21,7 @@
 
 env = Environment(tools = ['texas'])
 dvi = env.TeXASDoc('foo', 'foo.tex', builder = 'DVI', 
-                    dvi_deps = ['bar.txt', 'geez.txt'])
+                    deps = ['bar.txt', 'geez.txt'])
 
 deps = dvi[0].all_children()
 f = open('dvi_deps.txt', 'w')

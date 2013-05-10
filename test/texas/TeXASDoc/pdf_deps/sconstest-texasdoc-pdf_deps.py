@@ -31,14 +31,13 @@ test = TestSCons.TestSCons()
 
 test.dir_fixture('image')
 test.dir_fixture('../../../../texas', 'site_scons/site_tools/texas')
-test.file_fixture('../../../../site_scons/site_tools/dvipdfm.py', 'site_scons/site_tools/dvipdfm.py')
 
 # Normal invocation
-test.run(arguments = ['foo-pdf'], stderr = None)
+test.run(arguments = ['foo-pdf'])
 test.must_exist(test.workpath('foo.pdf'))
-test.must_exist(test.workpath('dvi_deps.txt'))
-test.must_contain('dvi_deps.txt', 'bar.txt')
-test.must_contain('dvi_deps.txt', 'geez.txt')
+test.must_exist(test.workpath('pdf_deps.txt'))
+test.must_contain('pdf_deps.txt', 'bar.txt')
+test.must_contain('pdf_deps.txt', 'geez.txt')
 
 # Cleanup
 test.run(arguments=['-c', 'foo-pdf'])

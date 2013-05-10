@@ -20,11 +20,11 @@
 # SOFTWARE
 
 env = Environment(tools = ['texas'])
-dvi = env.TeXASDoc('foo', 'foo.tex', builder = 'DVIPDFM',
-                   dvi_deps = ['bar.txt', 'geez.txt'])
+dvi = env.TeXASDoc('foo', 'foo.tex', builder = 'PDF',
+                   deps = ['bar.txt', 'geez.txt'])
 
 deps = dvi[0].all_children()
-f = open('dvi_deps.txt', 'w')
+f = open('pdf_deps.txt', 'w')
 f.write("\n".join(["%s" % str(d) for d in deps]))
 
 # Local Variables:
