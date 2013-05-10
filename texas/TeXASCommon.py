@@ -149,7 +149,7 @@ def get_auto_target(env, name, **kw):
     
     return target
 
-def get_auto_alias(name, **kw):
+def get_auto_alias(name, alias_kw, **kw):
     """Return an automatic alias for some entity identified by ``name``.
     
     If the ``alias``  keyword argument is set, return its value. Otherwise
@@ -162,7 +162,8 @@ def get_auto_alias(name, **kw):
 
         name
             package name (string),
-
+        alias_kw
+            base name of the keyword arguments holding alias information,
     :Keywords:
     
         alias_suffix
@@ -177,13 +178,13 @@ def get_auto_alias(name, **kw):
         an alias (string)
     """
     try: 
-        alias = kw['alias']
+        alias = kw[alias_kw]
     except KeyError:
         try:
-            alias_suffix = kw['alias_suffix']
+            alias_suffix = kw['%s_suffix' % alias_kw]
         except KeyError: 
             try: 
-                alias_suffix = kw['default_alias_suffix']
+                alias_suffix = kw['default_%s_suffix' % alias_kw]
             except KeyError:
                 alias_suffix = None
         if alias_suffix: 

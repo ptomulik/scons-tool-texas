@@ -32,7 +32,15 @@ class _Null(object): pass
 _null = _Null
 
 _local_keywords = TeXASCommon.keywords  + [
+    'dvi_alias',
+    'dvi_alias_suffix',
+    'default_dvi_alias',
+    'default_dvi_alias_suffix',
     'dvi_deps',
+    'pdf_alias',
+    'pdf_alias_suffix',
+    'default_pdf_alias',
+    'default_pdf_alias_suffix',
     'pdf_deps',
     'builder'
 ]
@@ -49,7 +57,7 @@ def _builddoc(env, name, source=_null, **kw):
     if builder == 'DVI' and 'suffix' in kw: del kw['suffix']
     if source is _null: source = name
 
-    alias = TeXASCommon.get_auto_alias(name, **kw)
+    alias = TeXASCommon.get_auto_alias(name, 'alias', **kw)
     target = TeXASCommon.get_auto_target(env, name, **kw)
     
     try: dvi_deps = kw['dvi_deps']
@@ -74,7 +82,7 @@ def _builddoc(env, name, source=_null, **kw):
         target = env.DVIPDFM(target, source, **kw)
         if pdf_deps: env.Depends(target, pdf_deps)
     else:
-        raise SCons.Errors.UserError('Unsupported builder: %r' % repr(builder))
+        raise SCons.Errors.UserError('Unsupported builder: %r' % builder)
     if alias:
         env.Alias(alias, target)
         env.AlwaysBuild(alias)
@@ -119,7 +127,12 @@ def Doc(env, name, source=_null, **kw):
     if 'builder' not in kw:
         kw['builder'] = 'DVI'
     
+    # Suffixes are fixed for DVI builder
+    kw['default_dvi_alias_suffix'] = 'dvi'
+    kw['default_dvi_suffix'] = '.dvi'
+
     if kw['builder'] == 'DVI':
+        # Suffixes are fixed for DVI builder
         kw['default_alias_suffix'] = 'dvi'
         kw['default_suffix'] = '.dvi'
     elif kw['builder'] == 'PDF':
@@ -129,6 +142,13 @@ def Doc(env, name, source=_null, **kw):
             kw['default_suffix'] = env.subst('$PDFSUFFIX')
             if not kw['default_suffix']:
                 kw['default_suffix'] = '.pdf'
+        #
+        kw['default_pdf_alias_suffix'] = 'pdf'
+        try: kw['default_pdf_suffix'] = kw['PDFSUFFIX']
+        except KeyError: 
+            kw['default_pdf_suffix'] = env.subst('$PDFSUFFIX')
+            if not kw['default_pdf_suffix']:
+                kw['default_pdf_suffix'] = '.pdf'
     elif kw['builder'] == 'DVIPDFM':
         kw['default_alias_suffix'] = 'pdf'
         try: kw['default_suffix'] = kw['DVIPDFMSUFFIX']
@@ -136,6 +156,13 @@ def Doc(env, name, source=_null, **kw):
             kw['default_suffix'] = env.subst('$DVIPDFMSUFFIX')
             if not kw['default_suffix']:
                 kw['default_suffix'] = '.pdf'
+        #
+        kw['default_pdf_alias_suffix'] = 'pdf'
+        try: kw['default_pdf_suffix'] = kw['DVIPDFMSUFFIX']
+        except KeyError: 
+            kw['default_pdf_suffix'] = env.subst('$DVIPDFMSUFFIX')
+            if not kw['default_pdf_suffix']:
+                kw['default_pdf_suffix'] = '.pdf'
     else:
         raise SCons.Errors.UserError('Unsupported builder: %r' % repr(builder))
 
@@ -143,6 +170,7 @@ def Doc(env, name, source=_null, **kw):
 
 def DVI(env, name, source=_null, **kw):
     """Compile ``*.dvi`` document with SCons DVI builder.
+
     :Parameters:
         env
             the SCons Environment object
@@ -150,6 +178,7 @@ def DVI(env, name, source=_null, **kw):
             package name (string)
         source
             source files to be included in the archive
+
     :Keywords:
         alias
             SCons alias for this target, if not provided the default alias
@@ -168,6 +197,7 @@ def DVI(env, name, source=_null, **kw):
             target file name to use instead of the default auto-generated name,
         version
             used to generate target name,
+
     :Returns:
         a list of targets created (single target actually)
     """
@@ -184,6 +214,7 @@ def PDF(env, name, source=_null, **kw):
             package name (string)
         source
             source files to be included in the archive
+
     :Keywords:
         alias
             SCons alias for this target, if not provided the default alias
@@ -212,6 +243,7 @@ def PDF(env, name, source=_null, **kw):
 
 def DVIPDFM(env, name, source=_null, **kw):
     """Compile ``*.pdf`` document with SCons DVIPDFM builder.
+
     :Parameters:
         env
             the SCons Environment object
@@ -219,6 +251,7 @@ def DVIPDFM(env, name, source=_null, **kw):
             package name (string)
         source
             source files to be included in the archive
+
     :Keywords:
         alias
             SCons alias for this target, if not provided the default alias
@@ -239,6 +272,7 @@ def DVIPDFM(env, name, source=_null, **kw):
             target file name to use instead of the default auto-generated name,
         version
             used to generate target name,
+
     :Returns:
         a list of targets created (single target actually)
     """

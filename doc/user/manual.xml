@@ -1,40 +1,987 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE article [
+
 <!--
-
-  Copyright (c) 2013 Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-
-  Permission is hereby granted, free of charge, to any person obtaining
-  a copy of this software and associated documentation files (the
-  "Software"), to deal in the Software without restriction, including
-  without limitation the rights to use, copy, modify, merge, publish,
-  distribute, sublicense, and/or sell copies of the Software, and to
-  permit persons to whom the Software is furnished to do so, subject to
-  the following conditions:
-
-  The above copyright notice and this permission notice shall be included
-  in all copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY
-  KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
-  WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-  NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-  LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
-  OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
-  WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
+  Builders
 -->
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.2//EN"
-"http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
-<article>
-  <title>SCons TeXAS user manual</title>
-  <articleinfo>
-    <author>
-      <firstname>Pawel</firstname>
-      <surname>Tomulik</surname>
-    </author>
-    <pubdate>2013-03-19</pubdate>
-  </articleinfo>
-<section id="basics"><title>Basics</title>
+
+<!ENTITY b-link-TeXASDoc "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASDoc'><function>TeXASDoc</function></link>">
+<!ENTITY b-link-TeXASDVI "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASDVI'><function>TeXASDVI</function></link>">
+<!ENTITY b-link-TeXASPDF "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASPDF'><function>TeXASPDF</function></link>">
+<!ENTITY b-link-TeXASDVIPDFM "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASDVIPDFM'><function>TeXASDVIPDFM</function></link>">
+<!ENTITY b-link-TeXASTar "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASTar'><function>TeXASTar</function></link>">
+<!ENTITY b-link-TeXASTarGz "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASTarGz'><function>TeXASTarGz</function></link>">
+<!ENTITY b-link-TeXASTarBz2 "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASTarBz2'><function>TeXASTarBz2</function></link>">
+
+<!--
+  Arguments
+-->
+
+<!ENTITY a-link-name "<link xmlns='http://docbook.org/ns/docbook' linkend='a-name'><varname>name</varname></link>">
+<!ENTITY a-link-source "<link xmlns='http://docbook.org/ns/docbook' linkend='a-source'><varname>source</varname></link>">
+<!ENTITY a-link-alias "<link xmlns='http://docbook.org/ns/docbook' linkend='a-alias'><varname>alias</varname></link>">
+<!ENTITY a-link-alias_suffix "<link xmlns='http://docbook.org/ns/docbook' linkend='a-alias_suffix'><varname>alias_suffix</varname></link>">
+<!ENTITY a-link-dvi_alias "<link xmlns='http://docbook.org/ns/docbook' linkend='a-dvi_alias'><varname>dvi_alias</varname></link>">
+<!ENTITY a-link-dvi_alias_suffix "<link xmlns='http://docbook.org/ns/docbook' linkend='a-dvi_alias_suffix'><varname>dvi_alias_suffix</varname></link>">
+<!ENTITY a-link-pdf_alias "<link xmlns='http://docbook.org/ns/docbook' linkend='a-pdf_alias'><varname>pdf_alias</varname></link>">
+<!ENTITY a-link-pdf_alias_suffix "<link xmlns='http://docbook.org/ns/docbook' linkend='a-pdf_alias_suffix'><varname>pdf_alias_suffix</varname></link>">
+<!ENTITY a-link-tar_alias "<link xmlns='http://docbook.org/ns/docbook' linkend='a-tar_alias'><varname>tar_alias</varname></link>">
+<!ENTITY a-link-tar_alias_suffix "<link xmlns='http://docbook.org/ns/docbook' linkend='a-tar_alias_suffix'><varname>tar_alias_suffix</varname></link>">
+<!ENTITY a-link-tgz_alias "<link xmlns='http://docbook.org/ns/docbook' linkend='a-tgz_alias'><varname>tgz_alias</varname></link>">
+<!ENTITY a-link-tgz_alias_suffix "<link xmlns='http://docbook.org/ns/docbook' linkend='a-tgz_alias_suffix'><varname>tgz_alias_suffix</varname></link>">
+<!ENTITY a-link-tbz2_alias "<link xmlns='http://docbook.org/ns/docbook' linkend='a-tbz2_alias'><varname>tbz2_alias</varname></link>">
+<!ENTITY a-link-tbz2_alias_suffix "<link xmlns='http://docbook.org/ns/docbook' linkend='a-tbz2_alias_suffix'><varname>tbz2_alias_suffix</varname></link>">
+<!ENTITY a-link-builder "<link xmlns='http://docbook.org/ns/docbook' linkend='a-builder'><varname>builder</varname></link>">
+<!ENTITY a-link-default_alias_suffix "<link xmlns='http://docbook.org/ns/docbook' linkend='a-default_alias_suffix'><varname>default_alias_suffix</varname></link>">
+<!ENTITY a-link-default_suffix "<link xmlns='http://docbook.org/ns/docbook' linkend='a-default_suffix'><varname>default_suffix</varname></link>">
+<!ENTITY a-link-dvi_deps "<link xmlns='http://docbook.org/ns/docbook' linkend='a-dvi_deps'><varname>dvi_deps</varname></link>">
+<!ENTITY a-link-out_dir "<link xmlns='http://docbook.org/ns/docbook' linkend='a-out_dir'><varname>out_dir</varname></link>">
+<!ENTITY a-link-pdf_deps "<link xmlns='http://docbook.org/ns/docbook' linkend='a-pdf_deps'><varname>pdf_deps</varname></link>">
+<!ENTITY a-link-strip_dirs "<link xmlns='http://docbook.org/ns/docbook' linkend='a-strip_dirs'><varname>strip_dirs</varname></link>">
+<!ENTITY a-link-suffix "<link xmlns='http://docbook.org/ns/docbook' linkend='a-suffix'><varname>suffix</varname></link>">
+<!ENTITY a-link-target "<link xmlns='http://docbook.org/ns/docbook' linkend='a-target'><varname>target</varname></link>">
+<!ENTITY a-link-version "<link xmlns='http://docbook.org/ns/docbook' linkend='a-version'><varname>version</varname></link>">
+
+<!--
+  Examples
+-->
+<!ENTITY e-link-TeXASDoc-foo_tex "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASDoc-foo_tex'/>">
+<!ENTITY e-link-TeXASDoc-dvi_nosource_tex "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASDoc-dvi_nosource_tex'/>">
+<!ENTITY e-link-TeXASDoc-dvi_simple1 "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASDoc-dvi_simple1'/>">
+<!ENTITY e-link-TeXASDoc-pdf_simple1 "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASDoc-pdf_simple1'/>">
+<!ENTITY e-link-TeXASDoc-alias "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASDoc-alias'/>">
+<!ENTITY e-link-TeXASDoc-alias_suffix "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASDoc-alias_suffix'/>">
+<!ENTITY e-link-TeXASDoc-noalias "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASDoc-noalias'/>">
+<!ENTITY e-link-TeXASDoc-dvi_deps "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASDoc-dvi_deps'/>">
+<!ENTITY e-link-TeXASDoc-out_dir "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASDoc-out_dir'/>">
+
+<!ENTITY e-link-TeXASDVI-simple1 "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASDVI-simple1'/>">
+
+<!ENTITY e-link-TeXASPDF-simple1 "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASPDF-simple1'/>">
+<!ENTITY e-link-TeXASPDF-strip_dirs "<xref xmlns='http://docbook.org/ns/docbook' linkend='e-TeXASPDF-strip_dirs'/>">
+]>
+
+<article xmlns="http://docbook.org/ns/docbook" version="5.0" xml:lang="en"
+         xmlns:xl="http://www.w3.org/1999/xlink">
+<title>SCons TeXAS Tool</title>
+<subtitle>User Manual</subtitle>
+<info>
+  <author>
+    <personname><firstname>Pawel</firstname>
+    <surname>Tomulik</surname></personname>
+    <email>ptomulik@meil.pw.edu.pl</email>
+  </author>
+  <pubdate>2013-05-08</pubdate>
+  <legalnotice>
+    <para>Copyright (c) 2013 by Pawel Tomulik</para>
+    <para>Permission is hereby granted, free of charge, to any person 
+    obtaining a copy of this software and associated documentation files 
+    (the &quot;Software&quot;), to deal in the Software without 
+    restriction, including without limitation the rights to use, copy, 
+    modify, merge, publish, distribute, sublicense, and/or sell copies 
+    of the Software, and to permit persons to whom the Software is 
+    furnished to do so, subject to the following conditions::</para>
+    <para>The above copyright notice and this permission notice shall be 
+    included in all copies or substantial portions of the 
+    Software.</para>
+    <para>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY 
+    OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
+    WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
+    BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN 
+    ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
+    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+    SOFTWARE</para>
+  </legalnotice>
+</info>  
+<section xml:id='sec-intro'>
+  <title>Introduction</title>
+  <para>
+    This toolset provides several pseudobuilders and utility functions to
+    simplify management and compilation of TeX projects. Currently it supports
+    compilation of TeX documents and packaging of sources for distribution.
+    The list of builders provided by the tool may be found in 
+    <xref linkend="sec-builders"/>. Builder arguments are documented in 
+    <xref linkend="sec-positional-args"/> and <xref linkend="sec-keyword-args"/>.
+    Utility functions are documented in <xref linkend="sec-util-funcs"/>.
+  </para>
+
+  <note>
+    <para>
+      The pseudobuilders provided by TeXAS toolset have non-standard interface.
+      Namely, instead of typical <literal>Builder(target,source,...)</literal>
+      they are defined as <literal>Builder(name,source,...)</literal> and the
+      &a-link-name; argument has different meaning. The &a-link-target;
+      argument is provided as a keyword argument and is optional.
+    </para>
+  </note>
+
+</section>
+
+<section xml:id='sec-builders'>
+  <title>Builders</title>
+  <para>This section documents pseudobuilders provided by TeXAS toolset.</para>
+
+  <variablelist>
+  <varlistentry xml:id="b-TeXASDoc">
+    <term><function>env.TeXASDoc()</function></term>
+    <listitem>
+    <para>
+      Compile TeX document using one of the supported builders. You may specify
+      builder explicitly (&a-link-builder;) or use default one. By default the
+      DVI builder is choosen. The &b-link-TeXASDoc; builder accepts following
+      keyword arguments:
+      &a-link-alias;,
+      &a-link-builder;,
+      &a-link-dvi_deps;,
+      &a-link-pdf_deps;,
+      &a-link-out_dir;,
+      &a-link-suffix;,
+      &a-link-target;,
+      &a-link-version;.
+    </para>
+    <para>
+      You may use &b-link-TeXASDVI;, &b-link-TeXASPDF;, and
+      &b-link-TeXASDVIPDFM; as a shorthand notation for
+      <literal>env.TeXASDoc(...,builder=...)</literal>.
+    </para>
+    <para>See <xref linkend="sec-TeXASDoc-examples"/>.</para>
+    </listitem>
+  </varlistentry>
+  <varlistentry xml:id="b-TeXASDVI">
+    <term><function>env.TeXASDVI()</function></term>
+    <listitem>
+      <para>
+        This is simply a wrapper around &b-link-TeXASDoc;: 
+        <literal>env.TeXASDVI(...)</literal> is equivalent to
+        <literal>env.TexASDoc(..., builder='DVI')</literal>.
+      </para>
+      <para>See <xref linkend="sec-TeXASDVI-examples"/>.</para>
+    </listitem>
+  </varlistentry>
+  <varlistentry xml:id="b-TeXASPDF">
+    <term><function>env.TeXASPDF()</function></term>
+    <listitem>
+      <para>
+        This is simply a wrapper around &b-link-TeXASDoc;:
+        <literal>env.TeXASPDF(...)</literal> is equivalent to
+        <literal>env.TexASDoc(..., builder='PDF')</literal>.
+      </para>
+      <para>See <xref linkend="sec-TeXASPDF-examples"/>.</para>
+    </listitem>
+  </varlistentry>
+  <varlistentry xml:id="b-TeXASDVIPDFM">
+    <term><function>env.TeXASDVIPDFM()</function></term>
+    <listitem>
+      <para>
+        This is simply a wrapper around &b-link-TeXASDoc;:
+        <literal>env.TeXASDVIPDFM(...)</literal> is equivalent to
+        <literal>env.TexASDoc(..., builder='DVIPDFM')</literal>.
+      </para>
+      <para>See <xref linkend="sec-TeXASDVIPDFM-examples"/>.</para>
+    </listitem>
+  </varlistentry>
+  <varlistentry xml:id="b-TeXASTar">
+    <term><function>env.TeXASTar()</function></term>
+    <listitem>
+      <para>
+        Put &a-link-source; files into TAR archive. This builer accepts the
+        following keyword arguments:
+        &a-link-alias;,
+        &a-link-alias_suffix;,
+        &a-link-out_dir;, 
+        &a-link-strip_dirs;,
+        &a-link-suffix;,
+        &a-link-target;,
+        &a-link-version;.
+      </para>
+      <para>See <xref linkend="sec-TeXASTar-examples"/>.</para>
+    </listitem>
+  </varlistentry>
+  <varlistentry xml:id="b-TeXASTarGz">
+    <term><function>env.TeXASTarGz()</function></term>
+    <listitem>
+      <para>
+        Put &a-link-source; files into gzipped TAR archive. This builer accepts the
+        following keyword arguments: 
+        &a-link-alias;,
+        &a-link-alias_suffix;,
+        &a-link-out_dir;, 
+        &a-link-strip_dirs;,
+        &a-link-suffix;,
+        &a-link-target;,
+        &a-link-version;.
+      </para>
+      <para>See <xref linkend="sec-TeXASTarGz-examples"/>.</para>
+    </listitem>
+  </varlistentry>
+  <varlistentry xml:id="b-TeXASTarBz2">
+    <term><function>env.TeXASTarBz2()</function></term>
+    <listitem>
+      <para>
+        Put &a-link-source; files into bzipped TAR archive. This builer accepts the
+        following keyword arguments: 
+        &a-link-alias;,
+        &a-link-alias_suffix;,
+        &a-link-out_dir;, 
+        &a-link-strip_dirs;,
+        &a-link-suffix;,
+        &a-link-target;,
+        &a-link-version;.
+      </para>
+      <para>See <xref linkend="sec-TeXASTarBz2-examples"/>.</para>
+    </listitem>
+  </varlistentry>
+  </variablelist>
+
+</section>
+
+<section xml:id='sec-util-funcs'>
+  <title>Utility functions</title>
+  <para>
+    This section documents utility functions provided by  TeXAS toolset.
+  </para>
+
+  <variablelist>
+  <varlistentry xml:id="f-TeXASRmDup">
+    <term><function>env.TeXASRmDup()</function></term>
+    <listitem>
+    <para>
+      Remove duplicates from the list of files, while preserving order.
+      Usage: <function>env.TeXASRmDup(nodes,*args,**kw)</function>, where
+      <varname>nodes</varname> is a list of files and <varname>*args</varname>
+      and <varname>**kw</varname> are passed to
+      <function>env.arg2nodes()</function> internally. 
+    </para>
+    </listitem>
+  </varlistentry>
+  </variablelist>
+
+</section>
+
+<section xml:id="sec-positional-args">
+  <title>Positional Arguments</title>
+
+  <para>
+    This section documents positional arguments used by TeXAS pseudobuilders. 
+  </para>
+
+  <variablelist>
+  <varlistentry xml:id="a-name">
+  <term><varname>name</varname></term>
+  <listitem>
+    <para>
+      Symbolic name of the target. It may be thought as a project name. It may
+      be, for example, a symbolic name of a scientific paper or a book being
+      compiled. Most TeXAS builders use the <varname>name</varname> argument to
+      deduce the name of target file (see &a-link-target;) and to generate
+      alias for the created target (see &a-link-alias;). 
+    </para>
+    <para>
+      Let's say you have a scientific paper in TeX format and you assigned 
+      symbolic name <literal>foo</literal> to its project. The document is thus
+      compiled with <literal>TeXASDoc('foo')</literal>. By default it will
+      produce <filename>foo.dvi</filename> from <filename>foo.tex</filename>
+      file. The builder will also generate scons alias
+      <literal>foo-dvi</literal>, so the paper may be built with
+      <command>scons</command> <parameter>foo-dvi</parameter> command.
+    </para>
+    <para>
+      In the next line of your SConscript you may use the same name in another
+      TeXAS builder to handle other aspect of your project. Take 
+      <literal>env.TeXASTarGz('foo',...)</literal> as example.  It will
+      create <filename>foo.tar.gz</filename> archive containing distributable
+      sources for your paper. The package creation will be available via scons
+      alias named <literal>foo-tgz</literal>.
+    </para>
+    <para>
+      The &a-link-name; argument interplays with &a-link-out_dir;,
+      &a-link-version;, and &a-link-suffix; keyword arguments when deducing target
+      name. It is used together with &a-link-alias_suffix; when generating the
+      alias.
+    </para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-source">
+  <term><varname>source</varname></term>
+  <listitem>
+    <para>
+      Source file(s). May be string, SCons file Node object or a list of
+      (strings/nodes).
+    </para>
+  </listitem>
+  </varlistentry>
+  </variablelist>
+
+</section>
+
+<section xml:id="sec-keyword-args">
+  <title>Keyword Arguments</title>
+
+  <para>
+    This section documents keyword arguments used by TeXAS pseudobuilders.
+    Note, that many of them are used consistently by more than one
+    pseudobuilder (for example &a-link-out_dir; is used in same way by
+    &b-link-TeXASDoc;, &b-link-TeXASTar; and others).
+  </para>
+
+  <variablelist>
+  <varlistentry xml:id="a-alias">
+  <term><varname>alias</varname></term>
+  <listitem>
+    <para>
+      Alias for the target being created. Most TeXAS builders generate default
+      aliases for their targets as a combination of &a-link-name; and
+      &a-link-alias_suffix;. If, for example, one compiles TeX document named
+      <literal>foo</literal> with <literal>env.TeXASDoc('foo')</literal>, then
+      the target DVI file may be built with <command>scons</command>
+      <parameter>foo-dvi</parameter> command. With &a-link-alias; you may
+      request a custom alias name to be generated instead of the default one.
+    </para>
+    <para>
+      Put <varname>alias</varname>=<literal>None</literal> to disable alias
+      generation.
+    </para>
+    <para>See &e-link-TeXASDoc-alias;.</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-alias_suffix">
+  <term><varname>alias_suffix</varname></term>
+  <listitem>
+    <para>
+      Alias suffix to be used for the generated alias (see also
+      &a-link-alias;). By default most of TeXAS builders generate aliases for
+      their targets by concatenating &a-link-name; and some default suffix
+      (&a-link-name;<literal>-dvi</literal> for DVI builder, for example). This
+      argument allows you to replace the default suffix with a custom one.
+    </para>
+    <para>See &e-link-TeXASDoc-alias_suffix;.</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-dvi_alias">
+  <term><varname>dvi_alias</varname></term>
+  <listitem>
+    <para>Not used yet</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-dvi_alias_suffix">
+  <term><varname>dvi_alias_suffix</varname></term>
+  <listitem>
+    <para>Not used yet</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-pdf_alias">
+  <term><varname>pdf_alias</varname></term>
+  <listitem>
+    <para>Not used yet</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-pdf_alias_suffix">
+  <term><varname>pdf_alias_suffix</varname></term>
+  <listitem>
+    <para>Not used yet</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-tar_alias">
+  <term><varname>tar_alias</varname></term>
+  <listitem>
+    <para>Not used yet</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-tar_alias_suffix">
+  <term><varname>tar_alias_suffix</varname></term>
+  <listitem>
+    <para>Not used yet</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-tgz_alias">
+  <term><varname>tgz_alias</varname></term>
+  <listitem>
+    <para>Not used yet</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-tgz_alias_suffix">
+  <term><varname>tgz_alias_suffix</varname></term>
+  <listitem>
+    <para>Not used yet</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-tbz2_alias">
+  <term><varname>tbz2_alias</varname></term>
+  <listitem>
+    <para>Not used yet</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-tbz2_alias_suffix">
+  <term><varname>tbz2_alias_suffix</varname></term>
+  <listitem>
+    <para>Not used yet</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-builder">
+  <term><varname>builder</varname></term>
+  <listitem>
+    <para>
+      Determines which TeX builder should be used by &b-link-TeXASDoc;
+      pseudobuilder. Currently possible choices are <literal>'DVI'</literal>,
+      <literal>'PDF'</literal>, and <literal>'DVIPDFM'</literal>.
+      <literal>'DVI'</literal> selects SCons stock <function>DVI</function>
+      builder, <literal>'PDF'</literal> selects SCons stock
+      <function>PDF</function> builder and <literal>'DVIPDFM'</literal> selects
+      <function>DVIPDFM</function> builder implemented in 
+      <link xl:href="http://sourceforge.net/projects/scons-dvipdfm/">
+      <literal>SCons dvipdfm tool</literal></link> by Pawel Tomulik.
+    </para>
+    <para>See &e-link-TeXASDoc-pdf_simple1;.</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-dvi_deps">
+  <term><varname>dvi_deps</varname></term>
+  <listitem>
+    <para>
+      Add extra dependencies to DVI file generated by &b-link-TeXASDoc;
+      (applies to DVI builder). Might be file name (string), file node object
+      or a list of these.
+    </para>
+    <para>
+      The effect of 
+      <programlisting>
+env.TeXASDoc(..., dvi_deps='bar')
+      </programlisting>
+      is same as
+      <programlisting>
+dvi = env.TeXASDoc(...)
+env.Depends(dvi, 'bar')
+      </programlisting>
+    </para>
+    <para>See &e-link-TeXASDoc-dvi_deps;.</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-pdf_deps">
+  <term><varname>pdf_deps</varname></term>
+  <listitem>
+    <para>
+      Add extra dependencies to PDF file generated by &b-link-TeXASDoc; (applies to PDF
+      and DVIPDFM builder). Might be a file name (string), file node object or
+      a list of these.
+    </para>
+    <para>
+      The effect of 
+      <programlisting>
+env.TeXASDoc(..., pdf_deps='bar')
+      </programlisting>
+      is same as
+      <programlisting>
+pdf = env.TeXASDoc(..., builder='PDF')
+env.Depends(pdf, 'bar')
+      </programlisting>
+    </para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-out_dir">
+  <term><varname>out_dir</varname></term>
+  <listitem>
+    <para>
+      Define custom output directory, where the target should be placed. It may
+      be useful when you don't mind to specify &a-link-target; explicitly.
+    </para>
+    <para>See &e-link-TeXASDoc-out_dir;.</para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-suffix">
+  <term><varname>suffix</varname></term>
+  <listitem>
+    <para>
+      Custom suffix for target file. This argument is used to provide custom
+      suffix for TeXAS builders which deduce target name from the &a-link-name;
+      parameter. For example, the DVI builder uses <literal>'.dvi'</literal>
+      suffix by default, if you do <literal>env.TeXASDoc('foo')</literal>, the
+      target name will be set to <filename>foo.dvi</filename>. You may provide 
+      <varname>suffix</varname> argument (for example
+      <literal>env.TeXASDoc('foo', suffix='.dv2')</literal>) to produce target
+      file with custom suffix (<filename>foo.dv2</filename> in this case).
+    </para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-target">
+  <term><varname>target</varname></term>
+  <listitem>
+    <para>
+      Defines the name of target file explicitly. By default, most of the TeXAS
+      builders deduce the name of target file from &a-link-out_dir;, &a-link-name;,
+      &a-link-version; and &a-link-suffix; values. The deduced target name has
+      form
+      [<varname>out_dir</varname>/]<varname>name</varname>[-<varname>version</varname>]<varname>suffix</varname>.
+      If some of the optional arguments (&a-link-out_dir;, &a-link-version;,
+      &a-link-suffix;) are not provided, defaults are used.
+    </para>
+    <para>
+      You may fix the name of target file by providing &a-link-target;
+      argument, for example <literal>env.TeXASDoc('foo',
+      target='bar.dvi')</literal>.
+    </para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-version">
+  <term><varname>version</varname></term>
+  <listitem>
+    <para>
+      Used together with &a-link-name; and &a-link-suffix; arguments to deduce
+      the name of target file. Defaults to <literal>None</literal>, i.e. there
+      is no version information in the name of target file by default.
+    </para>
+  </listitem>
+  </varlistentry>
+  <varlistentry xml:id="a-strip_dirs">
+  <term><varname>strip_dirs</varname></term>
+  <listitem>
+    <para>
+      Used by &b-link-TeXASTar;, &b-link-TeXASTarGz;, and &b-link-TeXASTarBz2;.
+      This argument contains a list of paths to be stripped-out from the
+      beginning of source file names, when putting them into archive. If,
+      for example, you set
+      <varname>strip_dirs</varname><literal>=['sub1']</literal> and the
+      &a-link-source; contains <filename>sub1/sub2/foo.ext</filename> file,
+      then this file will appear in the target archive as
+      <filename>sub2/foo.ext</filename>.
+    </para>
+  </listitem>
+  </varlistentry>
+  </variablelist>
+</section>
+<section>
+  <title>Construction variables</title>
+  <para>The TeXAS toolset does not define any construction variables.</para>
+</section>
+<section status="">
+  <title>Examples</title>
+
+  <para>
+    This section provides several usage examples. There is a subsection for
+    each builder and few other subsections related to certain aspects of TeXAS
+    toolset.
+  </para>
+
+  <section xml:id="sec-TeXASDoc-examples">
+  <title>TeXASDoc builder examples</title>
+
+  <para>
+    The &b-link-TeXASDoc; builder is a generic TeX (pseudo)builder which uses
+    one of DVI, PDF, or DVIPDFM builders, depending on user's choice. The
+    default builder is DVI.
+  </para>
+ 
+  <!--
+    Example: TeXASDoc/foo_tex 
+  -->
+
+  <example xml:id='e-TeXASDoc-foo_tex'>
+    <title>Sample foo.tex file</title>
+    <para>
+      In most of the following examples we will use the TeX file named
+      <filename>foo.tex</filename>:
+    </para>
+    <programlisting><![CDATA[ 
+  \documentclass{article}
+  \title{Hello world}
+  \author{John Smith}
+  \date{April 2013}
+  \begin{document}
+    \maketitle
+    Hello world!
+  \end{document} ]]>
+    </programlisting>
+  </example>
+
+  <!--
+    Example: TeXASDoc/simple1 
+  -->
+
+  <example xml:id='e-TeXASDoc-dvi_simple1'>
+    <title>TeXASDoc, simple usage</title>
+    <para> 
+      Let's say, you wish to compile the <filename>foo.tex</filename> from
+      &e-link-TeXASDoc-foo_tex; in order to create <filename>foo.dvi</filename>. 
+      To do this, you may write a <filename>SConstruct</filename> script as below:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASDoc('foo', 'foo.tex', builder = 'DVI') ]]>
+    </programlisting>
+    <para>
+      Note, that the &b-link-TeXASDoc; with <literal>builder='DVI'</literal>
+      generates automatically an alias named <literal>foo-dvi</literal>, so that you
+      can compile your document with the command: 
+      <command>scons</command> <parameter>foo-dvi</parameter>
+    </para>
+    <para>
+    You may often omit the &a-link-source; argument:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASDoc('foo', builder = 'DVI') ]]>
+    </programlisting>
+    <para>Finally, you may omit also the &a-link-builder; parameter in which
+    case default value <literal>'DVI'</literal> will be assumed:</para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASDoc('foo') ]]>
+    </programlisting>
+  </example>
+
+  <!--
+    Example: TeXASDoc/pdf_simple1
+  -->
+
+  <example xml:id='e-TeXASDoc-pdf_simple1'>
+    <title>TeXASDoc, choosing PDF builder</title>
+    <para> 
+      Let's compile the same source file <filename>foo.tex</filename> from
+      &e-link-TeXASDoc-foo_tex; but this time using PDF builder to produce PDF
+      file instead of DVI. For this, we provide the &a-link-builder; argument to
+      &b-link-TeXASDoc; builder as below:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASDoc('foo', 'foo.tex', builder='PDF') ]]>
+    </programlisting>
+    <para>
+      It is recommended to specify the &a-link-source; explicitly for PDF builder.
+      Otherwise SCons may look for <filename>foo.dvi</filename> instead of
+      <filename>foo.tex</filename> file when attempting to create
+      <filename>foo.pdf</filename>.
+    </para>
+    <para>
+      In this example the builder generates an alias
+      <literal>foo-pdf</literal>, so that you can create the document with the
+      command: 
+      <command>scons</command> <parameter>foo-pdf</parameter>
+    </para>
+  </example>
+
+  <!--
+    Example: TeXASDoc/alias
+  -->
+
+  <example xml:id="e-TeXASDoc-alias">
+    <title>TeXASDoc, custom alias</title>
+    <para>
+      From previous examples we have seen that &b-link-TeXASDoc; generates
+      aliases for its targets. By default an alias is generated following the
+      patern <literal>name-suffix</literal>. Of course, you can force the
+      builder to generate your own alias. In this example we force generation
+      of custom alias named <literal>customalias</literal> instead of default
+      <literal>foo-dvi</literal>. This is done with the help of
+      &a-link-alias; keyword argument:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASDoc('foo', 'foo.tex', builder = 'DVI',
+               alias = 'customalias') ]]>
+    </programlisting>
+    <para>
+      Now, you can create the document <filename>foo.dvi</filename> with the
+      command: 
+      <command>scons</command> <parameter>customalias</parameter>
+    </para>
+  </example>
+
+  <!--
+    Example: TeXASDoc/alias_suffix
+  -->
+
+  <example xml:id="e-TeXASDoc-alias_suffix">
+    <title>TeXASDoc, custom alias suffix</title>
+    <para>
+      In this example we change alias suffix for DVI document. We'll use suffix
+      <literal>sfx</literal> instead of default suffix <literal>dvi</literal>.
+      This is done with the help of &a-link-alias_suffix; keyword argument.
+      The resulting alias will be <literal>foo-sfx</literal> instead of
+      <literal>foo-dvi</literal>.
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASDoc('foo', 'foo.tex', builder = 'DVI',
+               alias_suffix = 'sfx') ]]>
+    </programlisting>
+    <para>
+      Now, you can create the document <filename>foo.dvi</filename> with the
+      command: 
+      <command>scons</command> <parameter>foo-sfx</parameter>
+    </para>
+  </example>
+
+  <!--
+    Example: TeXASDoc/noalias
+  -->
+
+  <example xml:id="e-TeXASDoc-noalias">
+    <title>TeXASDoc, without alias</title>
+    <para>
+      In this example we disable generation of scons alias. This is done with
+      the help of &a-link-alias; keyword argument:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASDoc('foo', 'foo.tex', builder = 'DVI', alias = None) ]]>
+    </programlisting>
+  </example>
+
+  <!--
+    Example: TeXASDoc/dvi_deps
+  -->
+
+  <example xml:id="e-TeXASDoc-dvi_deps">
+    <title>TeXASDoc, extra dependencies</title>
+    <para>
+      In this example we add dependencies to DVI document. Let's say, we wish
+      to add dependencies of <filename>foo.dvi</filename> on
+      <filename>bar.txt</filename> and <filename>geez.txt</filename> files,
+      which are not detected by LaTeX scanner. This may be done quickly with
+      &a-link-dvi_deps; argument, as follows:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  dvi = env.TeXASDoc('foo', 'foo.tex', 
+                     dvi_deps = ['bar.txt', 'geez.txt']) ]]>
+    </programlisting>
+  </example>
+
+  <!--
+    Example: TeXASDoc/out_dir
+  -->
+
+  <example xml:id="e-TeXASDoc-out_dir">
+    <title>TeXASDoc, custom output directory</title>
+    <para>
+      In this example we compile TeX document in custom directory. The
+      directory name is provided via &a-link-out_dir; keyword argument.
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASDoc('foo', builder = 'DVI', out_dir = 'out') ]]>
+    </programlisting>
+    <para>
+      The above script reads the file <filename>foo.tex</filename> located in
+      same directory as the <filename>SConstruct</filename> and creates
+      <filename>out/foo.dvi</filename> (relative to the
+      <filename>SConstruct</filename> file).
+    </para>
+  </example>
+
+  </section>
+
+  <section xml:id="sec-TeXASDVI-examples">
+  <title>TeXASDVI builder examples</title>
+
+  <!--
+    Example: TeXASDVI/simple1
+  -->
+
+  <example xml:id="e-TeXASDVI-simple1">
+    <title>TeXASDVI, simple usage</title>
+    <para>
+      Assume, you have TeX source <filename>foo.tex</filename> as in
+      &e-link-TeXASDoc-foo_tex;. Now, you wish to process
+      <filename>foo.tex</filename> in order to create
+      <filename>foo.dvi</filename>. To do this, write the following
+      <filename>SConstruct</filename> file:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASDVI('foo', 'foo.tex') ]]>
+    </programlisting>
+    <para>
+      Note, that this script also creates an alias <literal>foo-dvi</literal>,
+      so that you can create the document with the command: 
+      <command>scons</command> <parameter>foo-dvi</parameter>
+    </para>
+  </example>
+
+  </section>
+
+  <section xml:id="sec-TeXASPDF-examples">
+  <title>TeXASPDF builder examples</title>
+
+  <!--
+    Example: TeXASPDF/simple1
+  -->
+
+  <example xml:id="e-TeXASPDF-simple1">
+    <title>TeXASPDF, simple usage</title>
+    <para>
+      Assume, you have TeX source <filename>foo.tex</filename> as in
+      &e-link-TeXASDoc-foo_tex;. Now, you wish to process
+      <filename>foo.tex</filename> in order to create
+      <filename>foo.pdf</filename>. To do this, write the following
+      <filename>SConstruct</filename> file:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASPDF('foo', 'foo.tex') ]]>
+    </programlisting>
+    <para>
+      The above script is likely to use <command>pdflatex</command> program or
+      such to transform TeX source directly to PDF without generating
+      intermediate DVI.
+    </para>
+    <para>
+      Note, that this script also creates an alias <literal>foo-pdf</literal>,
+      so that you can create the document with the command: 
+      <command>scons</command> <parameter>foo-pdf</parameter>
+    </para>
+  </example>
+  </section>
+
+  <section xml:id="sec-TeXASDVIPDFM-examples">
+  <title>TeXASDVIPDFM builder examples</title>
+
+  <!--
+    Example: TeXASDVIPDFM/simple1
+  -->
+
+  <example xml:id="e-TeXASDVIPDFM-simple1">
+    <title>TeXASDVIPDFM, simple usage</title>
+    <para>
+      Assume, you have TeX source <filename>foo.tex</filename> as in
+      &e-link-TeXASDoc-foo_tex;. Now, you wish to process
+      <filename>foo.tex</filename> in order to create
+      <filename>foo.pdf</filename>. You wish to use the
+      <command>dvipdfm</command> program to transform DVI to PDF. To do this,
+      write the following <filename>SConstruct</filename> file:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  env.TeXASDVIPDFM('foo', 'foo.tex') ]]>
+    </programlisting>
+    <para>
+      Note, that this script also creates an alias <literal>foo-pdf</literal>,
+      so that you can create the document with the command: 
+      <command>scons</command> <parameter>foo-pdf</parameter>
+    </para>
+  </example>
+  </section>
+
+  <section xml:id="sec-TeXASTar-examples">
+  <title>TeXASTar builder examples</title>
+
+  <!--
+    Example: TeXASTar/simple1
+  -->
+
+  <example xml:id="e-TeXASTar-simple1">
+    <title>TeXASTar, simple usage</title>
+    <para>
+      Assume, you have files <filename>geez.txt</filename>,
+      <filename>sub1/foo.txt</filename>, and
+      <filename>sub1/sub2/bar.txt</filename>, that you wish to put into TAR
+      archive. Nothing simpler that:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  source =  ['geez.txt', 'sub1/foo.txt', 'sub1/sub2/bar.txt']
+  env.TeXASTar('foo', source) ]]>
+    </programlisting>
+    <para>
+      The above script creates archive named <filename>foo.tar</filename>
+      with the abovementioned files. Note, that the
+      &b-link-TeXASTar; builder also creates scons alias named
+      <literal>foo-tar</literal>, so you may (re)create the arhive with
+      the command: <command>scons</command> <parameter>foo-tar</parameter>.
+    </para>
+  </example>
+
+  <!--
+    Example: TeXASTar/strip_dirs
+  -->
+
+  <example xml:id="e-TeXASTar-strip_dirs">
+    <title>TeXASTar, strip leading paths</title>
+    <para>
+      In this example we have source files <filename>sub1/foo.txt</filename>, and
+      <filename>sub1/sub2/bar.txt</filename>. We pack them into tarball but we
+      wish to strip-out leading <literal>sub1/</literal> from the paths in
+      archive. This might be done with the help of &a-link-strip_dirs; argument
+      as below:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  source =  ['sub1/foo.txt', 'sub1/sub2/bar.txt']
+  env.TeXASTar('foo', source, strip_dirs = 'sub1') ]]>
+    </programlisting>
+    <para>
+      The above script creates an archive named <filename>foo.tar</filename>
+      containing files: <filename>foo.txt</filename> and
+      <filename>sub2/bar.txt</filename>.
+    </para>
+    <para>
+      Note, that you may strip multiple leading paths at once. If you have, for
+      example, source files <filename>sub1/foo.txt</filename> and
+      <filename>sub2/foo.txt</filename>, you may strip both
+      <literal>sub1/</literal> and <literal>sub2</literal> prefixes as follows:
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  source =  ['sub1/foo.txt', 'sub2/bar.txt']
+  env.TeXASTar('foo', source, strip_dirs = ['sub1', 'sub2']) ]]>
+    </programlisting>
+    <para>
+      The above script creates an archive named <filename>foo.tar</filename>
+      containing files: <filename>foo.txt</filename> and
+      <filename>bar.txt</filename>.
+    </para>
+  </example>
+  </section>
+
+  <section xml:id="sec-TeXASTarGz-examples">
+  <title>TeXASTarGz builder examples</title>
+  <example xml:id="e-TeXASTarGz-simple1">
+    <title>TeXASTarGz, simple usage</title>
+    <para>
+      In this simple example we put files <filename>geez.txt</filename>,
+      <filename>sub1/foo.txt</filename>, and
+      <filename>sub1/sub2/bar.txt</filename> into gzipped TAR archive.
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  source =  ['geez.txt', 'sub1/foo.txt', 'sub1/sub2/bar.txt']
+  env.TeXASTarGz('foo', source)
+    ]]>
+    </programlisting>
+    <para>
+      The above script creates gzipped archive named <filename>foo.tar.gz</filename>
+      with the abovementioned files. Note, that the
+      &b-link-TeXASTarGz; builder also creates scons alias named
+      <literal>foo-tgz</literal>, so you may (re)create the arhive with
+      the command: <command>scons</command> <parameter>foo-tgz</parameter>.
+    </para>
+  </example>
+  </section>
+
+  <section xml:id="sec-TeXASTarBz2-examples">
+  <title>TeXASTarBz2 builder examples</title>
+  <example xml:id="e-TeXASTarBz2-simple1">
+    <title>TeXASTarBz2, simple usage</title>
+    <para>
+      In this simple example we put files <filename>geez.txt</filename>,
+      <filename>sub1/foo.txt</filename>, and
+      <filename>sub1/sub2/bar.txt</filename> into bzipped TAR archive.
+    </para>
+    <programlisting><![CDATA[  # SConstruct
+  env = Environment(tools = ['texas'])
+  source =  ['geez.txt', 'sub1/foo.txt', 'sub1/sub2/bar.txt']
+  env.TeXASTarBz2('foo', source)
+    ]]>
+    </programlisting>
+    <para>
+      The above script creates bzipped archive named <filename>foo.tar.bz2</filename>
+      with the abovementioned files. Note, that the
+      &b-link-TeXASTarBz2; builder also creates scons alias named
+      <literal>foo-tbz2</literal>, so you may (re)create the arhive with
+      the command: <command>scons</command> <parameter>foo-tbz2</parameter>.
+    </para>
+  </example>
+  </section>
 
 </section>
 </article>

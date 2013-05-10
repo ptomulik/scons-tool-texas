@@ -41,7 +41,7 @@ def _tar(env, name, source, **kw):
     import SCons.Util
 
     target = TeXASCommon.get_auto_target(env, name, **kw)
-    alias = TeXASCommon.get_auto_alias(name, **kw)
+    alias = TeXASCommon.get_auto_alias(name, 'alias', **kw)
 
     # Some paths are stripped from file names in the archive
     strip_paths = TeXASCommon.get_strip_paths(env, **kw)
