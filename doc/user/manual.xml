@@ -104,15 +104,13 @@
     <xref linkend="sec-builders"/>. Builder arguments are documented in 
     <xref linkend="sec-positional-args"/> and <xref linkend="sec-keyword-args"/>.
     Utility functions are documented in <xref linkend="sec-util-funcs"/>.
+    We also have couple of examples in <xref linkend="sec-examples"/>.
   </para>
 
   <note>
     <para>
       The pseudobuilders provided by TeXAS toolset have non-standard interface.
-      Namely, instead of typical <literal>Builder(target,source,...)</literal>
-      they are defined as <literal>Builder(name,source,...)</literal> and the
-      &a-link-name; argument has different meaning. The &a-link-target;
-      argument is provided as a keyword argument and is optional.
+      See <xref linkend="sec-builders"/> for details.
     </para>
   </note>
 
@@ -120,17 +118,29 @@
 
 <section xml:id='sec-builders'>
   <title>Builders</title>
-  <para>This section documents pseudobuilders provided by TeXAS toolset.</para>
-
+  
+  <para>
+    This section documents pseudobuilders provided by TeXAS toolset. The
+    interface for all of the following builders is:
+    <synopsis label="">
+      <function>env.Builder</function>(<parameter>name</parameter>, <parameter>source</parameter>, <parameter>**kw</parameter>)
+    </synopsis>    
+    where <function>Builder</function> is a placeholder for one of the TeXAS
+    pseudobuilders. Positional arguments are documented in
+    <xref linkend="sec-positional-args"/>. Keyword arguments
+    <parameter>**kw</parameter> are documented in
+    <xref linkend="sec-keyword-args"/>.
+  </para>
+  
   <variablelist>
   <varlistentry xml:id="b-TeXASDoc">
     <term><function>env.TeXASDoc()</function></term>
     <listitem>
     <para>
       Compile TeX document using one of the supported builders. You may specify
-      builder explicitly (&a-link-builder;) or use default one. By default the
-      DVI builder is choosen. The &b-link-TeXASDoc; builder accepts following
-      keyword arguments:
+      builder explicitly (the &a-link-builder; argument) or use default one.
+      By default the DVI builder is choosen. The &b-link-TeXASDoc; builder
+      accepts following keyword arguments:
       &a-link-alias;,
       &a-link-builder;,
       &a-link-dvi_deps;,
@@ -472,7 +482,7 @@ env.TeXASDoc(..., pdf_deps='bar')
       </programlisting>
       is same as
       <programlisting>
-pdf = env.TeXASDoc(..., builder='PDF')
+pdf = env.TeXASDoc(...)
 env.Depends(pdf, 'bar')
       </programlisting>
     </para>
@@ -549,11 +559,13 @@ env.Depends(pdf, 'bar')
   </varlistentry>
   </variablelist>
 </section>
-<section>
+
+<section xml:id="sec-constr-vars">
   <title>Construction variables</title>
   <para>The TeXAS toolset does not define any construction variables.</para>
 </section>
-<section status="">
+
+<section xml:id="sec-examples">
   <title>Examples</title>
 
   <para>
