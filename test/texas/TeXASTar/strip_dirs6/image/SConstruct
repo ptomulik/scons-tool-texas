@@ -21,9 +21,8 @@
 
 env = Environment(tools = ['texas'])
 
-package = 'package'
-source =  ['sub1/foo.txt', 'sub1/sub2/bar.txt']
-env.TeXASTar(package, source, strip_dirs = 'sub1')
+VariantDir('build', 'src', duplicate = 0)
+SConscript('build/SConscript', exports = 'env')
 
 # Local Variables:
 # # tab-width:4

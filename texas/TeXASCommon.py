@@ -37,6 +37,17 @@ keywords = [
     'version',
 ]
 
+def RmDup(env, nodes, *args, **kw):
+    """Remove duplicates from list ``nodes``, while preserving order"""
+    result = []
+    seen = set()
+    nodes = env.arg2nodes(nodes, *args, **kw)
+    for n in nodes:
+        if not n in seen:
+            result.append(n)
+            seen.add(n)
+    return result
+
 def del_keys(dict_,keys):
     for k in keys:
         if k in dict_:
@@ -193,8 +204,9 @@ def get_auto_alias(name, alias_kw, **kw):
             alias = name
     return alias
 
-def get_strip_paths(env, **kw):
-    """Prepare list of paths to strip from the beginning of file names.
+def get_strip_dirs(env, **kw):
+    """Prepare list of directory nodes to be stripped from the beginning of 
+    file names.
     
     :Parameters:
         env 
@@ -216,8 +228,6 @@ def get_strip_paths(env, **kw):
     except KeyError:
         dirs = []
 
-    top = env.Dir('#')
-
     if SCons.Util.is_String(dirs):
         dirs = [ env.Dir(dirs) ]
     elif SCons.Util.is_Sequence(dirs):
@@ -226,15 +236,21 @@ def get_strip_paths(env, **kw):
         dirs = [ env.Dir('.') ]
     else: 
         paths = []
-     
+
     dirs2 = dirs[:]
     for d in dirs:
         s = d.srcnode()
         if d != s:
             dirs2.append(s)
+    return dirs2
 
-    paths = [ top.rel_path(d) for d in list(set(dirs2)) ]
-    return paths 
+def joinpathre(dirs):
+    import re
+    paths = [ str(d) for d in dirs ]
+    # Escape the paths for sed regular expression
+    paths = [ re.sub(r'([\.\[\]:\*])', r'\\\1', p) for p in paths ]
+    paths = [ re.sub(r'\/*$', r'/*', p) for p in paths ]
+    return '\\|'.join(paths)
 
 # Local Variables:
 # # tab-width:4

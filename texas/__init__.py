@@ -38,17 +38,6 @@ _dvi_generated = False
 _pdf_generated = False
 _dvipdfm_generated = False
 
-def RmDup(env, nodes, *args, **kw):
-    """Remove duplicates from list ``nodes``, while preserving order"""
-    result = []
-    seen = set()
-    nodes = env.arg2nodes(nodes, *args, **kw)
-    for n in nodes:
-        if not n in seen:
-            result.append(n)
-            seen.add(n)
-    return result
-
 def _generate_tar(env):
     global _tar_generated
     if not _tar_generated:
@@ -112,7 +101,7 @@ def generate(env):
     _generate_pdf(env)
     _generate_dvipdfm(env)
     env.AddMethod(TeXASDoc.Doc, 'TeXASDoc')
-    env.AddMethod(RmDup, 'TeXASRmDup')
+    env.AddMethod(TeXASCommon.RmDup, 'TeXASRmDup')
 
 def exists(env):
     SCons.Tool.tex.generate_darvin(env)

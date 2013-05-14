@@ -19,14 +19,44 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE
 
-env = Environment(tools = ['texas'])
+__docformat__ = "restructuredText"
 
-package = 'package'
-source =  ['sub1/foo.txt', 'sub1/sub2/bar.txt']
-env.TeXASTar(package, source, strip_dirs = 'sub1')
+"""
+TODO: Write documentation
+"""
+
+import TestSCons
+import tarfile
+
+alias = 'package-tar'
+tarname = 'sub1/package.tar'
+srcfiles = sorted(['foo.txt', 'bar.txt'])
+
+test = TestSCons.TestSCons()
+
+test.dir_fixture('image')
+test.dir_fixture('../../../../texas', 'site_scons/site_tools/texas')
+
+# Normal invocation
+test.run(arguments = alias)
+test.must_exist(test.workpath(tarname))
+
+tar = tarfile.open(tarname, 'r')
+tarfiles = sorted(tar.getnames())
+if not (srcfiles == tarfiles):
+    print "The archive %s should contain following files: " \
+        % test.workpath(tarname)
+    print '  ' + str(srcfiles)
+    print "but it contains:" 
+    print '  ' + str(tarfiles)
+    test.fail_test()
+
+# Cleanup
+test.run(arguments=['-c', alias])
+test.must_not_exist(test.workpath(tarname))
 
 # Local Variables:
 # # tab-width:4
 # # indent-tabs-mode:nil
 # # End:
-# vim: set syntax=scons expandtab tabstop=4 shiftwidth=4:
+# vim: set syntax=python expandtab tabstop=4 shiftwidth=4:

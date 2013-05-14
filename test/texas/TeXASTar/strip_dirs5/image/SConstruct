@@ -21,9 +21,7 @@
 
 env = Environment(tools = ['texas'])
 
-package = 'package'
-source =  ['sub1/foo.txt', 'sub1/sub2/bar.txt']
-env.TeXASTar(package, source, strip_dirs = 'sub1')
+SConscript('sub1/SConscript', exports = 'env')
 
 # Local Variables:
 # # tab-width:4

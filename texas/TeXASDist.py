@@ -44,13 +44,16 @@ def _tar(env, name, source, **kw):
     alias = TeXASCommon.get_auto_alias(name, 'alias', **kw)
 
     # Some paths are stripped from file names in the archive
-    strip_paths = TeXASCommon.get_strip_paths(env, **kw)
-    if strip_paths:
-        t = "--transform='s:^\\(%s\\)::S'" % '\\|'.join(strip_paths)
-        flags = SCons.Util.CLVar([t, "--transform='s:^/\\+::S'"])
-        kw['TARFLAGS'] = TeXASCommon.append_flags(env, 'TARFLAGS', flags, **kw)
+    dirs2strip = TeXASCommon.get_strip_dirs(env, **kw)
 
     kw = _del_local_keywords(kw)
+    if dirs2strip:
+        kw['_dirs2strip'] = dirs2strip 
+        kw['_joinpathre'] = TeXASCommon.joinpathre
+        t = "--transform='s:^\\(${_joinpathre(_dirs2strip)}\\)::S'"
+        flags = SCons.Util.CLVar(t)
+        kw['TARFLAGS'] = TeXASCommon.append_flags(env, 'TARFLAGS', flags, **kw)
+
     target = env.Tar(target, source, **kw)
 
     if alias:

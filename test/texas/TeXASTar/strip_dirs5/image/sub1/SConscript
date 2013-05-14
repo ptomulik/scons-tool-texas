@@ -19,11 +19,10 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE
 
-env = Environment(tools = ['texas'])
-
+Import('env')
 package = 'package'
-source =  ['sub1/foo.txt', 'sub1/sub2/bar.txt']
-env.TeXASTar(package, source, strip_dirs = 'sub1')
+source =  ['foo.txt', '../sub2/bar.txt']
+env.TeXASTar(package, source, strip_dirs = ['.','../sub2'])
 
 # Local Variables:
 # # tab-width:4
