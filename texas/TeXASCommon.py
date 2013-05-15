@@ -65,7 +65,7 @@ def append_flags(env, key, flags, **kw):
     ``flags``. The result is returned as an instance of ``SCons.Util.CLVar``
     object.
 
-    :Arguments:
+    :Parameters:
         env
             the SCons Environment object,
         key
