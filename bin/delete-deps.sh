@@ -31,5 +31,6 @@ BINDIR="$TOPDIR/bin"
 $BINDIR/delete-test-framework.sh
 $BINDIR/delete-docbook-tool.sh
 $BINDIR/delete-dvipdfm-tool.sh
+$BINDIR/delete-kpsewhich-tool.sh
 
 # vim: set syntax=sh expandtab tabstop=4 shiftwidth=4 nospell:

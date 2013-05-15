@@ -20,17 +20,28 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE
 
-# download-deps.sh
+# download-docbook-tool.sh
 #
-# Download all dependencies from external repositories.
+# Download SCons docbook tool. 
+
+set -e
+
+echo "Downloading SCons docbook tool."
 
 TOPDIR=$(readlink -f "$(dirname $0)/..")
-BINDIR="$TOPDIR/bin"
+TOOLDIR="$TOPDIR/site_scons/site_tools"
+TMPDIR=$(mktemp -d)
+REPO="git@github.com:ptomulik/scons-tool-kpsewhich.git"
+REPODIR="scons-tool-kpsewhich"
 
-# Run all scripts in sequel
-$BINDIR/download-test-framework.sh
-$BINDIR/download-docbook-tool.sh
-$BINDIR/download-dvipdfm-tool.sh
-$BINDIR/download-kpsewhich-tool.sh
+test -z "$TMPDIR" && { echo "Failed to create temp directory" >&2 ; exit 1; }
+test -d "$TMPDIR" || { echo "'$TMPDIR' is not a directory" >&2 ; exit 1; }
+
+test -x "$TOOLDIR" || mkdir -p "$TOOLDIR"
+
+(cd $TMPDIR && git clone "$REPO" && \
+ cp "$REPODIR/kpsewhich.py" "$TOOLDIR" )
+
+rm -rf "$TMPDIR"
 
 # vim: set syntax=sh expandtab tabstop=4 shiftwidth=4 nospell:

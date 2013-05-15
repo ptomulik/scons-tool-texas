@@ -20,17 +20,16 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE
 
-# download-deps.sh
+# delete-docbook-tool.sh
 #
-# Download all dependencies from external repositories.
+# Delete files downloaded by download-docbook-tool.sh
+
+set +e
 
 TOPDIR=$(readlink -f "$(dirname $0)/..")
-BINDIR="$TOPDIR/bin"
+TOOLDIR="$TOPDIR/site_scons/site_tools"
+TOOLFILES="$TOOLDIR/kpsewhich.py $TOOLDIR/kpsewhich.pyc"
 
-# Run all scripts in sequel
-$BINDIR/download-test-framework.sh
-$BINDIR/download-docbook-tool.sh
-$BINDIR/download-dvipdfm-tool.sh
-$BINDIR/download-kpsewhich-tool.sh
+rm -rf $TOOLFILES 
 
 # vim: set syntax=sh expandtab tabstop=4 shiftwidth=4 nospell:

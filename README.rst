@@ -67,6 +67,7 @@ TO RUN TESTS
 
   - `SCons test framework`_ by Dirk Baechle, 
   - `SCons dvipdfm tool`_ by Paweł Tomulik
+  - `SCons ksewhich tool`_ by Paweł Tomulik
 
 TO GENERATE API DOCUMENTATION
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -130,6 +131,30 @@ The tool may be further removed from the development tree with the script
 ``bin/delete-dvipdfm-tool.sh``::
 
     bin/download-dvipdfm-tool.sh
+
+SCONS KPSEWHICH TOOL
+^^^^^^^^^^^^^^^^^^^^
+
+The ``TeXAS`` tool depends on `SCons kpsewhich tool`_, which is not available
+in the SCons_ core (at least not in 2.3.0 and earlier versions). The following
+files/directories need to be downloaded (and placed as shown in table relative
+to the top-level source directory)
+
+ ========================= ==================================================
+  source file/directory                   target file/directory
+ ========================= ==================================================
+   ``kpsewhich.py``         ``site_scons/site_tools/dvipdfm.py``
+ ========================= ==================================================
+
+On GNU systems you may download it with the script
+``bin/download-kpsewhich-tool.sh``::
+
+    bin/download-kpsewhich-tool.sh
+
+The tool may be further removed from the development tree with the script
+``bin/delete-kpsewhich-tool.sh``::
+
+    bin/download-kpsewhich-tool.sh
 
 TESTING FRAMEWORK
 ^^^^^^^^^^^^^^^^^
@@ -257,3 +282,4 @@ SOFTWARE
 .. _SCons docbook tool: https://bitbucket.org/dirkbaechle/scons_docbook/
 .. _git: http://git-scm.com/
 .. _SCons dvipdfm tool: https://github.com/ptomulik/scons-tool-dvipdfm
+.. _SCons kpsewhich tool: https://github.com/ptomulik/scons-tool-kpsewhich
