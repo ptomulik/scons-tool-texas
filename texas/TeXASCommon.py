@@ -48,6 +48,77 @@ def RmDup(env, nodes, *args, **kw):
             seen.add(n)
     return result
 
+def Children(env, node):
+    node = env.arg2nodes(node, env.fs.Entry)[0]
+
+    children = []
+    def select_files(ss): 
+        import SCons.Node
+        for s in ss: 
+            if isinstance(s, SCons.Node.FS.Dir): 
+                select_files(s.children()) 
+            elif isinstance(s.disambiguate(), SCons.Node.FS.File): 
+                children.append(s) 
+
+    select_files(node.children())
+
+    return RmDup(env, children)
+
+
+def ImportFromTDS(env, source, **kw):
+    """Import a file from TeX Directory Structure 
+    
+    Use ``kpsewhich`` to search for source source within TeX Directory
+    Structure and copy them to the target directory ``tdir``.
+
+    Note: in addition to arguments documented here, this method accepts all
+    keyword parameters recognized by ``env.KPSShowPath()`` and
+    ``env.KPSFindFiles()``. See documentation of ``kpsewhich tool``.
+
+    :Parameters:
+
+        source
+            (a list of) file(s) to be imported
+
+    :Keywords:
+        out_dir
+            where to import files to, defaults to '.'
+
+    :Returns:
+        list of nodes created in the target directory.
+    """
+    import SCons.Util
+    import SCons.Script
+    import SCons.Errors
+    import re
+
+    if not SCons.Util.is_Sequence(source): source = [source]
+    source = [ env.subst(str(f)) for f in source ]
+
+    try: out_dir = kw['out_dir']
+    except KeyError: out_dir = env.Dir('.')
+
+    found = {}
+    for f in source:
+        suffix = SCons.Util.silent_intern(SCons.Util.splitext(f)[1])
+        if suffix:
+            kw['path'] = env.KPSShowPath(suffix, **kw)
+            # Remove all '.' (CWD) dir entries
+            kw['path'] = re.sub(r'(?:^\./*:|:\./*$)',r'', kw['path'])
+            kw['path'] = re.sub(r':\./*:',r':', kw['path'])
+            # Find the file in TDS
+            found[f] = env.KPSFindFiles(f, **kw)
+        else:
+            raise SCons.Errors.UserError( "Can't import file '%s' " \
+                                        + "which has no suffix." % f)
+    target = [] 
+    for dname, sname in found.iteritems():
+        dst = env.File(dname, out_dir)
+        t = env.Command(dst, sname, SCons.Script.Copy('$TARGET', '$SOURCE'))
+        target.extend(t)
+
+    return target
+
 def del_keys(dict_,keys):
     for k in keys:
         if k in dict_:

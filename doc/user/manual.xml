@@ -12,6 +12,7 @@
 <!ENTITY b-link-TeXASTar "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASTar'><function>TeXASTar</function></link>">
 <!ENTITY b-link-TeXASTarGz "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASTarGz'><function>TeXASTarGz</function></link>">
 <!ENTITY b-link-TeXASTarBz2 "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASTarBz2'><function>TeXASTarBz2</function></link>">
+<!ENTITY b-link-TeXASImport "<link xmlns='http://docbook.org/ns/docbook' linkend='b-TeXASImport'><function>TeXASImport</function></link>">
 
 <!--
   Arguments
@@ -122,7 +123,7 @@
   
   <para>
     This section documents pseudobuilders provided by TeXAS toolset. The
-    interface for all of the following builders is:
+    interface for the builders is following (unless explicitly stated):
     <synopsis label="">
       <function>env.Builder</function>(<parameter>name</parameter>, <parameter>source</parameter>, <parameter>**kw</parameter>)
     </synopsis>    
@@ -242,6 +243,15 @@
       <para>See <xref linkend="sec-TeXASTarBz2-examples"/>.</para>
     </listitem>
   </varlistentry>
+  <varlistentry xml:id="b-TeXASImport">
+    <term><function>env.TeXASImport()</function></term>
+    <listitem>
+      <para>
+        TODO: write documentation
+      </para>
+      <!--<para>See <xref linkend="sec-TeXASTarBz2-examples"/>.</para>-->
+    </listitem>
+  </varlistentry>
   </variablelist>
 
 </section>
@@ -262,6 +272,14 @@
       <varname>nodes</varname> is a list of files and <varname>*args</varname>
       and <varname>**kw</varname> are passed to
       <function>env.arg2nodes()</function> internally. 
+    </para>
+    </listitem>
+  </varlistentry>
+  <varlistentry xml:id="f-TeXASChildren">
+    <term><function>env.TeXASChildren()</function></term>
+    <listitem>
+    <para>
+      TODO:
     </para>
     </listitem>
   </varlistentry>

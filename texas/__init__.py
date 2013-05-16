@@ -37,6 +37,7 @@ _tar_generated = False
 _dvi_generated = False
 _pdf_generated = False
 _dvipdfm_generated = False
+_kpsewhich_generated = False
 
 def _generate_tar(env):
     global _tar_generated
@@ -93,6 +94,16 @@ def _generate_dvipdfm(env):
                 + '$DVIPDFM $DVIPDFMFLAGS -o ${TARGET.file} ' \
                 + '${TARGET.rel_path(SOURCE)}'
             _dvipdfm_generated = True
+
+def _generate_kpsewhich(env):
+    import SCons.Errors
+    global _kpsewhich_generated
+    if not _kpsewhich_generated:
+        try: env.Tool('kpsewhich')
+        except SCons.Errors.EnvironmentError: return
+        else:
+            env.AddMethod(TeXASCommon.ImportFromTDS, 'TeXASImport')
+            _kpsewhich_generated = True
     
 
 def generate(env):
@@ -100,8 +111,10 @@ def generate(env):
     _generate_dvi(env)
     _generate_pdf(env)
     _generate_dvipdfm(env)
+    _generate_kpsewhich(env)
     env.AddMethod(TeXASDoc.Doc, 'TeXASDoc')
     env.AddMethod(TeXASCommon.RmDup, 'TeXASRmDup')
+    env.AddMethod(TeXASCommon.Children, 'TeXASChildren')
 
 def exists(env):
     SCons.Tool.tex.generate_darvin(env)
