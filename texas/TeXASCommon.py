@@ -56,18 +56,12 @@ def Children(env, node):
         import SCons.Node
         for s in ss: 
             if isinstance(s, SCons.Node.FS.Dir): 
-                select_files(s.children()) 
+                select_files(s.all_children()) 
             elif isinstance(s.disambiguate(), SCons.Node.FS.File): 
                 children.append(s) 
 
-    select_files(node.children())
+    select_files(node.all_children())
 
-    def final_source(node):
-        while (node != node.srcnode()):
-            node = node.srcnode()
-        return node
-
-    children = map(final_source, children)
     return RmDup(env, children)
 
 
