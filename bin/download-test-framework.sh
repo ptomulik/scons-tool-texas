@@ -26,7 +26,7 @@
 
 set -e
 
-echo "Downloading SCons test framework."
+echo '** Downloading SCons test framework **'
 
 TOPDIR=$(readlink -f "$(dirname $0)/..")
 TMPDIR=$(mktemp -d)

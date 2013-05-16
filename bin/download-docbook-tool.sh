@@ -26,7 +26,7 @@
 
 set -e
 
-echo "Downloading SCons docbook tool."
+echo '** Downloading SCons docbook tool **'
 
 TOPDIR=$(readlink -f "$(dirname $0)/..")
 TOOLDIR="$TOPDIR/site_scons/site_tools/docbook"

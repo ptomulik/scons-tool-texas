@@ -20,13 +20,13 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE
 
-# download-docbook-tool.sh
+# download-kpsewhich-tool.sh
 #
-# Download SCons docbook tool. 
+# Download SCons kpsewhich tool. 
 
 set -e
 
-echo "Downloading SCons docbook tool."
+echo '** Downloading SCons kpsewhich tool **'
 
 TOPDIR=$(readlink -f "$(dirname $0)/..")
 TOOLDIR="$TOPDIR/site_scons/site_tools"
