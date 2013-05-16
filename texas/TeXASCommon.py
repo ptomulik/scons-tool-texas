@@ -62,6 +62,12 @@ def Children(env, node):
 
     select_files(node.children())
 
+    def final_source(node):
+        while (node != node.srcnode()):
+            node = node.srcnode()
+        return node
+
+    children = map(final_source, children)
     return RmDup(env, children)
 
 

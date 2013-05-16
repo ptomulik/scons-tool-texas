@@ -1,0 +1,3 @@
+* Write more tests for TeXASImport (variant dir, local subdirectories),
+* Write tests for TeXASChildren,
+* Write documentation for TeXASImport and TeXASChildren,
