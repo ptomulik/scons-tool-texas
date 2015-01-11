@@ -110,6 +110,7 @@ def Doc(env, name, source=_null, **kw):
     :Returns:
         a list of targets created (single target actually)
     """
+    import SCons.Errors
     if 'builder' not in kw:
         kw['builder'] = 'DVI'
     
