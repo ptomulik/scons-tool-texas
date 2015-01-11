@@ -133,7 +133,7 @@ def Doc(env, name, source=_null, **kw):
             if not kw['default_suffix']:
                 kw['default_suffix'] = '.pdf'
     else:
-        raise SCons.Errors.UserError('Unsupported builder: %r' % repr(builder))
+        raise SCons.Errors.UserError('Unsupported builder: %r' % repr(kw['builder']))
 
     return _builddoc(env, name, source, **kw)
 
