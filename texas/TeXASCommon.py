@@ -306,7 +306,7 @@ def get_strip_dirs(env, **kw):
     elif dirs:
         dirs = [ env.Dir('.') ]
     else: 
-        paths = []
+        dirs = []
 
     dirs2 = dirs[:]
     for d in dirs:
