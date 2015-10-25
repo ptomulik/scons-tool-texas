@@ -317,11 +317,16 @@ def get_strip_dirs(env, **kw):
 
 def joinpathre(dirs):
     import re
+    import platform
     paths = [ str(d) for d in dirs ]
     # Escape the paths for sed regular expression
     paths = [ re.sub(r'([\.\[\]:\*])', r'\\\1', p) for p in paths ]
     paths = [ re.sub(r'\/*$', r'/*', p) for p in paths ]
-    return '\\|'.join(paths)
+    if platform.system() == 'Windows':
+        paths = [ re.sub(r'([&<>|\'`,;=()!^])', r'^\1', p) for p in paths ]
+        return '\\^|'.join(paths)
+    else:
+        return '\\|'.join(paths)
 
 # Local Variables:
 # # tab-width:4

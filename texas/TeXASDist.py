@@ -39,6 +39,7 @@ def _del_local_keywords(kw):
 def _tar(env, name, source, **kw):
     """Core of the `Tar()`, `TarGz()` and `TarBz2()`"""
     import SCons.Util
+    import platform
 
     target = TeXASCommon.get_auto_target(env, name, **kw)
     alias = TeXASCommon.get_auto_alias(name, 'alias', **kw)
@@ -50,7 +51,10 @@ def _tar(env, name, source, **kw):
     if dirs2strip:
         kw['_dirs2strip'] = dirs2strip 
         kw['_joinpathre'] = TeXASCommon.joinpathre
-        t = "--transform='s:^\\(${_joinpathre(_dirs2strip)}\\)::S'"
+        if platform.system() == 'Windows':
+            t = "--transform='s:^^\\(${_joinpathre(_dirs2strip)}\\)::S'"
+        else:
+            t = "--transform='s:^\\(${_joinpathre(_dirs2strip)}\\)::S'"
         flags = SCons.Util.CLVar(t)
         kw['TARFLAGS'] = TeXASCommon.append_flags(env, 'TARFLAGS', flags, **kw)
 
