@@ -51,8 +51,9 @@ test.write( ['share', 'texmf', 'bibtex', 'bib', 'local', 'foo.bib'],
 test.run(chdir = 'src')
 test.must_exist(test.workpath('src/foo.cls'))
 test.must_exist(test.workpath('src/foo.bib'))
-test.must_contain('src/foo.cls', 'orig-foo.cls')
-test.must_contain('src/foo.bib', 'orig-foo.bib')
+test.write('src/foo.cls', 'orig-foo.cls')
+test.must_contain('src/foo.cls', "rig-foo.cls")
+test.must_contain('src/foo.bib', "rig-foo.bib")
 
 #
 # Ensure that TeXASImport() is not fooled by files existing locally
@@ -63,8 +64,8 @@ test.write( ['share', 'texmf', 'bibtex', 'bib', 'local', 'foo.bib'],
 test.run(chdir = 'src')
 test.must_exist(test.workpath('src/foo.cls'))
 test.must_exist(test.workpath('src/foo.bib'))
-test.must_contain('src/foo.cls', 'updated-foo.cls')
-test.must_contain('src/foo.bib', 'updated-foo.bib')
+test.must_contain('src/foo.cls', 'pdated-foo.cls')
+test.must_contain('src/foo.bib', 'pdated-foo.bib')
 
 # Cleanup
 test.run(arguments=['-c'], chdir = 'src')
