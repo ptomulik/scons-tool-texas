@@ -5,7 +5,7 @@ This is a SCons tool (set) named TeX Automated with SCons (``TeXAS``). It
 wraps several SCons builders with the aim of simplifying compilation of ``TeX``
 projects. It brings several features, that you may find useful:
 
-- compact syntax, 
+- compact syntax,
 - consistent interface between builders provided by ``TeXAS``,
 - oriented towards compiling named "projects",
 - automatic generation of SCons aliases for predefined targets,
@@ -33,7 +33,7 @@ e.g.) you may write simple SCons script::
 
     # SConstruct
     env = Environment(tools = ['texas'])
-    dvi = env.TeXASDVI('foo', version = '1.0', dvi_deps = ['bar.eps']) 
+    dvi = env.TeXASDVI('foo', version = '1.0', dvi_deps = ['bar.eps'])
     src = env.TeXASRmDup( dvi[0].children() )
     tar = env.TeXASTarGz('foo', src, version = '1.0')
 
@@ -65,9 +65,9 @@ automatize the download process, and they require the following software
 TO RUN TESTS
 ^^^^^^^^^^^^
 
-  - `SCons test framework`_ by Dirk Baechle, 
+  - `SCons test framework`_ by Dirk Baechle,
   - `SCons dvipdfm tool`_ by Paweł Tomulik
-  - `SCons ksewhich tool`_ by Paweł Tomulik
+  - `SCons kpsewhich tool`_ by Paweł Tomulik
 
 TO GENERATE API DOCUMENTATION
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -103,7 +103,7 @@ The development tree may be later cleaned-up from the downloaded files by::
 Particular projects, that this project depends on, are mentioned in the
 following subsections. You may look through it if the above scripts do not
 work well on your platform. Otherwise, all of the following dependencies
-are handled by ``download-deps.sh`` and ``delete-deps.sh`` scripts.  
+are handled by ``download-deps.sh`` and ``delete-deps.sh`` scripts.
 
 All downloaded files are ignored by ``.gitignore``, so you don't have to worry
 about deleting them before doing commits.
@@ -220,8 +220,8 @@ RUNNING TESTS
 -------------
 
 To run all the tests type::
-  
-    python runtest.py -a
+
+    SCONS_EXTERNAL_TEST=1 python runtest.py -a
 
 This requires the presence of the testing framework in the development tree.
 
@@ -251,7 +251,7 @@ The generated documentation will be written to ``build/doc/user/``.
 
 LICENSE
 -------
-Copyright (c) 2013 by Pawel Tomulik
+Copyright (c) 2013-2018 by Pawel Tomulik
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

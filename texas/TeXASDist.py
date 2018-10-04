@@ -4,18 +4,18 @@ Utility functions for packaging and distribution of sources.
 """
 
 #
-# Copyright (c) 2013 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-# 
+# Copyright (c) 2013-2018 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -49,7 +49,7 @@ def _tar(env, name, source, **kw):
 
     kw = _del_local_keywords(kw)
     if dirs2strip:
-        kw['_dirs2strip'] = dirs2strip 
+        kw['_dirs2strip'] = dirs2strip
         kw['_joinpathre'] = TeXASCommon.joinpathre
         if platform.system() == 'Windows':
             t = "--transform='s:^^\\(${_joinpathre(_dirs2strip)}\\)::S'"
@@ -124,11 +124,11 @@ def Tar(env, name, source, **kw):
 
     kw['default_alias_suffix'] = 'tar'
     try: kw['default_suffix'] = kw['TARSUFFIX']
-    except KeyError: 
+    except KeyError:
         kw['default_suffix'] = env.subst('$TARSUFFIX')
         if not kw['default_suffix']:
             kw['default_suffix'] = '.tar'
-    return _tar(env, name, source, **kw) 
+    return _tar(env, name, source, **kw)
 
 def TarGz(env, name, source, **kw):
     """Create gzipped tar archive from source(s).
@@ -188,7 +188,7 @@ def TarGz(env, name, source, **kw):
     kw['default_alias_suffix'] = 'tgz'
     kw['default_suffix'] = '.tar.gz'
     kw['TARFLAGS'] = TeXASCommon.append_flags(env, 'TARFLAGS', '-z', **kw)
-    return _tar(env, name, source, **kw) 
+    return _tar(env, name, source, **kw)
 
 def TarBz2(env, name, source, **kw):
     """Create bzipped tar archive from source(s).
@@ -247,7 +247,7 @@ def TarBz2(env, name, source, **kw):
     kw['default_alias_suffix'] = 'tbz2'
     kw['default_suffix'] = '.tar.bz2'
     kw['TARFLAGS'] = TeXASCommon.append_flags(env, 'TARFLAGS', '-j', **kw)
-    return _tar(env, name, source, **kw) 
+    return _tar(env, name, source, **kw)
 
 # Local Variables:
 # # tab-width:4

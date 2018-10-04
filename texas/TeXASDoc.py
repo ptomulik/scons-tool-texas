@@ -4,18 +4,18 @@ Utilities for the compilation of LaTeX papers (articles).
 """
 
 #
-# Copyright (c) 2013 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-# 
+# Copyright (c) 2013-2018 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -50,7 +50,7 @@ def _builddoc(env, name, source=_null, **kw):
 
     alias = TeXASCommon.get_auto_alias(name, 'alias', **kw)
     target = TeXASCommon.get_auto_target(env, name, **kw)
-    
+
     try: deps = kw['deps']
     except KeyError: deps = None
 
@@ -97,12 +97,12 @@ def Doc(env, name, source=_null, **kw):
         builder
             string - name of the builder used to create target, currently
             supported values are ``'DVI'``, ``'PDF'`` and ``'DVIPDFM'``,
-        deps 
+        deps
             extra dependencies for target file
         out_dir
             output directory
         suffix
-            ignored, the suffix is hard-coded to ``.dvi`` 
+            ignored, the suffix is hard-coded to ``.dvi``
         target
             target file name to use instead of the default auto-generated name,
         version
@@ -113,7 +113,7 @@ def Doc(env, name, source=_null, **kw):
     import SCons.Errors
     if 'builder' not in kw:
         kw['builder'] = 'DVI'
-    
+
     if kw['builder'] == 'DVI':
         # Suffixes are fixed for DVI builder
         kw['default_alias_suffix'] = 'dvi'
@@ -121,14 +121,14 @@ def Doc(env, name, source=_null, **kw):
     elif kw['builder'] == 'PDF':
         kw['default_alias_suffix'] = 'pdf'
         try: kw['default_suffix'] = kw['PDFSUFFIX']
-        except KeyError: 
+        except KeyError:
             kw['default_suffix'] = env.subst('$PDFSUFFIX')
             if not kw['default_suffix']:
                 kw['default_suffix'] = '.pdf'
     elif kw['builder'] == 'DVIPDFM':
         kw['default_alias_suffix'] = 'pdf'
         try: kw['default_suffix'] = kw['DVIPDFMSUFFIX']
-        except KeyError: 
+        except KeyError:
             kw['default_suffix'] = env.subst('$DVIPDFMSUFFIX')
             if not kw['default_suffix']:
                 kw['default_suffix'] = '.pdf'
@@ -156,12 +156,12 @@ def DVI(env, name, source=_null, **kw):
             create any alias set ``alias=None``,
         alias_suffix
             alias suffix to be used instead of the default ``dvi`` alias suffix,
-        deps 
+        deps
             extra dependencies for DVI target,
         out_dir
             output directory
         suffix
-            ignored, the suffix is hard-coded to ``.dvi`` 
+            ignored, the suffix is hard-coded to ``.dvi``
         target
             target file name to use instead of the default auto-generated name,
         version
@@ -171,7 +171,7 @@ def DVI(env, name, source=_null, **kw):
         a list of targets created (single target actually)
     """
     kw['builder'] = 'DVI'
-    return Doc(env, name, source, **kw) 
+    return Doc(env, name, source, **kw)
 
 def PDF(env, name, source=_null, **kw):
     """Compile ``*.pdf`` document with SCons PDF builder.
@@ -208,7 +208,7 @@ def PDF(env, name, source=_null, **kw):
         a list of targets created (single target actually)
     """
     kw['builder'] = 'PDF'
-    return Doc(env, name, source, **kw) 
+    return Doc(env, name, source, **kw)
 
 def DVIPDFM(env, name, source=_null, **kw):
     """Compile ``*.pdf`` document with SCons DVIPDFM builder.
@@ -246,7 +246,7 @@ def DVIPDFM(env, name, source=_null, **kw):
         a list of targets created (single target actually)
     """
     kw['builder'] = 'DVIPDFM'
-    return Doc(env, name, source, **kw) 
+    return Doc(env, name, source, **kw)
 
 
 # Local Variables:

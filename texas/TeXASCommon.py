@@ -4,18 +4,18 @@ Utilities used commonly by other `texas` modules
 """
 
 #
-# Copyright (c) 2013 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
-# 
+# Copyright (c) 2013-2018 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
+#
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
 # to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
-# 
+#
 # The above copyright notice and this permission notice shall be included in all
 # copies or substantial portions of the Software.
-# 
+#
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 # FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -52,13 +52,13 @@ def Children(env, node):
     node = env.arg2nodes(node, env.fs.Entry)[0]
 
     children = []
-    def select_files(ss): 
+    def select_files(ss):
         import SCons.Node
-        for s in ss: 
-            if isinstance(s, SCons.Node.FS.Dir): 
-                select_files(s.all_children()) 
-            elif isinstance(s.disambiguate(), SCons.Node.FS.File): 
-                children.append(s) 
+        for s in ss:
+            if isinstance(s, SCons.Node.FS.Dir):
+                select_files(s.all_children())
+            elif isinstance(s.disambiguate(), SCons.Node.FS.File):
+                children.append(s)
 
     select_files(node.all_children())
 
@@ -66,8 +66,8 @@ def Children(env, node):
 
 
 def ImportFromTDS(env, source, **kw):
-    """Import a file from TeX Directory Structure 
-    
+    """Import a file from TeX Directory Structure
+
     Use ``kpsewhich`` to search for source source within TeX Directory
     Structure and copy them to the target directory ``tdir``.
 
@@ -111,7 +111,7 @@ def ImportFromTDS(env, source, **kw):
         else:
             raise SCons.Errors.UserError( "Can't import file '%s' " \
                                         + "which has no suffix." % f)
-    target = [] 
+    target = []
     for dname, sname in found.iteritems():
         dst = env.File(dname, out_dir)
         t = env.Command(dst, sname, SCons.Script.Copy('$TARGET', '$SOURCE'))
@@ -127,7 +127,7 @@ def del_keys(dict_,keys):
 
 def append_flags(env, key, flags, **kw):
     """Append new flags to ones existing in ``kw[key]`` or ``env[key]``.
-    
+
     Return the "sum" of flags defined in ``kw[key]`` (or ``env[key]`` if the
     former is not set) and the ``flags``. If ``kw[key]`` is set, then the
     returned value is a "concatenation" of ``kw[key]`` and ``flags``, otherwise
@@ -144,7 +144,7 @@ def append_flags(env, key, flags, **kw):
         flags
             the extra flags to be appended to the original ones,
         kw
-            keyword arguments, possibly with ``kw[key]`` set. 
+            keyword arguments, possibly with ``kw[key]`` set.
 
     :Returns:
         concatenated flags as ``SCons.Util.CLVar`` list.
@@ -170,7 +170,7 @@ def append_flags(env, key, flags, **kw):
 
 def get_auto_target(env, name, **kw):
     """Return an automatic target for some entity identified by ``name``.
-    
+
     If the ``target``  keyword argument is set, return its value. Otherwise make
     and return a SCons Node object which points to a file
     ``[<out_dir>]/<name>[-version]<suffix>``. If ``suffix`` is not set, then
@@ -184,14 +184,14 @@ def get_auto_target(env, name, **kw):
             package name (string),
 
     :Keywords:
-    
+
         suffix
             (optional) suffix for the target file,
         default_suffix
             default suffix for use when the ``suffix`` is not given,
-        version 
+        version
             (optional) package version,
-        out_dir 
+        out_dir
             (optional) output directory for the target file,
         target
             (optional) the fixed target name to be returned instead of
@@ -202,38 +202,38 @@ def get_auto_target(env, name, **kw):
         argument is provided and is not a Node)
     """
     import SCons.Node.FS
-    try: 
+    try:
         target = kw['target']
     except KeyError:
-        try: 
+        try:
             suffix = kw['suffix']
-        except KeyError: 
-            try: 
+        except KeyError:
+            try:
                 suffix = kw['default_suffix']
-            except KeyError: 
+            except KeyError:
                 suffix = ''
-        try: 
+        try:
             version = kw['version']
-        except KeyError: 
+        except KeyError:
             version = None
-        if version: 
+        if version:
             target = '%s-%s%s' % (name, version, suffix)
-        else: 
+        else:
             target = '%s%s' % (name, suffix)
-        try:    
+        try:
             out_dir = kw['out_dir']
         except KeyError:
             out_dir = env.Dir('.')
         else:
             if not isinstance(out_dir, SCons.Node.FS.Dir):
                 out_dir = env.Dir(out_dir)
-        target = env.File(target, out_dir) 
-    
+        target = env.File(target, out_dir)
+
     return target
 
 def get_auto_alias(name, alias_kw, **kw):
     """Return an automatic alias for some entity identified by ``name``.
-    
+
     If the ``alias``  keyword argument is set, return its value. Otherwise
     compose and return an alias as ``<name>[-<alias_suffix>]``. If
     ``alias_suffix`` is not set, use ``default_alias_suffix`` instead.
@@ -247,7 +247,7 @@ def get_auto_alias(name, alias_kw, **kw):
         alias_kw
             base name of the keyword arguments holding alias information,
     :Keywords:
-    
+
         alias_suffix
             (optional) suffix for the alias,
         default_alias_suffix
@@ -259,35 +259,35 @@ def get_auto_alias(name, alias_kw, **kw):
     :Returns:
         an alias (string)
     """
-    try: 
+    try:
         alias = kw[alias_kw]
     except KeyError:
         try:
             alias_suffix = kw['%s_suffix' % alias_kw]
-        except KeyError: 
-            try: 
+        except KeyError:
+            try:
                 alias_suffix = kw['default_%s_suffix' % alias_kw]
             except KeyError:
                 alias_suffix = None
-        if alias_suffix: 
+        if alias_suffix:
             alias = '%s-%s' % (name, alias_suffix)
         else:
             alias = name
     return alias
 
 def get_strip_dirs(env, **kw):
-    """Prepare list of directory nodes to be stripped from the beginning of 
+    """Prepare list of directory nodes to be stripped from the beginning of
     file names.
-    
+
     :Parameters:
-        env 
+        env
             the SCons Environment object
     :Keywords:
         strip_dirs
             (optional) directory name (string) or sequence of
             directories (Nodes or strings) to be stripped out;
             if string is found, it is interpreted as a directory name
-            relative to the current working directory, 
+            relative to the current working directory,
     :Returns:
         list of paths (strings), each one relative to the top level source
         directory (denoted by '#' in SCons); if ``strip_dirs`` is not provided,
@@ -305,7 +305,7 @@ def get_strip_dirs(env, **kw):
         dirs = [ env.Dir(d) for d in dirs ]
     elif dirs:
         dirs = [ env.Dir('.') ]
-    else: 
+    else:
         dirs = []
 
     dirs2 = dirs[:]

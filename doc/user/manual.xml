@@ -75,35 +75,35 @@
   </author>
   <pubdate>2013-05-08</pubdate>
   <legalnotice>
-    <para>Copyright (c) 2013 by Pawel Tomulik</para>
-    <para>Permission is hereby granted, free of charge, to any person 
-    obtaining a copy of this software and associated documentation files 
-    (the &quot;Software&quot;), to deal in the Software without 
-    restriction, including without limitation the rights to use, copy, 
-    modify, merge, publish, distribute, sublicense, and/or sell copies 
-    of the Software, and to permit persons to whom the Software is 
+    <para>Copyright (c) 2013-2018 by Pawel Tomulik</para>
+    <para>Permission is hereby granted, free of charge, to any person
+    obtaining a copy of this software and associated documentation files
+    (the &quot;Software&quot;), to deal in the Software without
+    restriction, including without limitation the rights to use, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell copies
+    of the Software, and to permit persons to whom the Software is
     furnished to do so, subject to the following conditions::</para>
-    <para>The above copyright notice and this permission notice shall be 
-    included in all copies or substantial portions of the 
+    <para>The above copyright notice and this permission notice shall be
+    included in all copies or substantial portions of the
     Software.</para>
-    <para>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY 
-    OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE 
-    WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
-    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS 
-    BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN 
-    ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN 
-    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE 
+    <para>THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY
+    OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE
+    WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS
+    BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN
+    ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+    CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
     SOFTWARE</para>
   </legalnotice>
-</info>  
+</info>
 <section xml:id='sec-intro'>
   <title>Introduction</title>
   <para>
     This toolset provides several pseudobuilders and utility functions to
     simplify management and compilation of TeX projects. Currently it supports
     compilation of TeX documents and packaging of sources for distribution.
-    The list of builders provided by the tool may be found in 
-    <xref linkend="sec-builders"/>. Builder arguments are documented in 
+    The list of builders provided by the tool may be found in
+    <xref linkend="sec-builders"/>. Builder arguments are documented in
     <xref linkend="sec-positional-args"/> and <xref linkend="sec-keyword-args"/>.
     Utility functions are documented in <xref linkend="sec-util-funcs"/>.
     We also have couple of examples in <xref linkend="sec-examples"/>.
@@ -120,20 +120,20 @@
 
 <section xml:id='sec-builders'>
   <title>Builders</title>
-  
+
   <para>
     This section documents pseudobuilders provided by TeXAS toolset. The
     interface for the builders is following (unless explicitly stated):
     <synopsis label="">
       <function>env.Builder</function>(<parameter>name</parameter>, <parameter>source</parameter>, <parameter>**kw</parameter>)
-    </synopsis>    
+    </synopsis>
     where <function>Builder</function> is a placeholder for one of the TeXAS
     pseudobuilders. Positional arguments are documented in
     <xref linkend="sec-positional-args"/>. Keyword arguments
     <parameter>**kw</parameter> are documented in
     <xref linkend="sec-keyword-args"/>.
   </para>
-  
+
   <variablelist>
   <varlistentry xml:id="b-TeXASDoc">
     <term><function>env.TeXASDoc()</function></term>
@@ -163,7 +163,7 @@
     <term><function>env.TeXASDVI()</function></term>
     <listitem>
       <para>
-        This is simply a wrapper around &b-link-TeXASDoc;: 
+        This is simply a wrapper around &b-link-TeXASDoc;:
         <literal>env.TeXASDVI(...)</literal> is equivalent to
         <literal>env.TexASDoc(..., builder='DVI')</literal>.
       </para>
@@ -200,7 +200,7 @@
         following keyword arguments:
         &a-link-alias;,
         &a-link-alias_suffix;,
-        &a-link-out_dir;, 
+        &a-link-out_dir;,
         &a-link-strip_dirs;,
         &a-link-suffix;,
         &a-link-target;,
@@ -214,10 +214,10 @@
     <listitem>
       <para>
         Put &a-link-source; files into gzipped TAR archive. This builer accepts the
-        following keyword arguments: 
+        following keyword arguments:
         &a-link-alias;,
         &a-link-alias_suffix;,
-        &a-link-out_dir;, 
+        &a-link-out_dir;,
         &a-link-strip_dirs;,
         &a-link-suffix;,
         &a-link-target;,
@@ -231,10 +231,10 @@
     <listitem>
       <para>
         Put &a-link-source; files into bzipped TAR archive. This builer accepts the
-        following keyword arguments: 
+        following keyword arguments:
         &a-link-alias;,
         &a-link-alias_suffix;,
-        &a-link-out_dir;, 
+        &a-link-out_dir;,
         &a-link-strip_dirs;,
         &a-link-suffix;,
         &a-link-target;,
@@ -271,7 +271,7 @@
       Usage: <function>env.TeXASRmDup(nodes,*args,**kw)</function>, where
       <varname>nodes</varname> is a list of files and <varname>*args</varname>
       and <varname>**kw</varname> are passed to
-      <function>env.arg2nodes()</function> internally. 
+      <function>env.arg2nodes()</function> internally.
     </para>
     </listitem>
   </varlistentry>
@@ -291,7 +291,7 @@
   <title>Positional Arguments</title>
 
   <para>
-    This section documents positional arguments used by TeXAS pseudobuilders. 
+    This section documents positional arguments used by TeXAS pseudobuilders.
   </para>
 
   <variablelist>
@@ -303,10 +303,10 @@
       be, for example, a symbolic name of a scientific paper or a book being
       compiled. Most TeXAS builders use the <varname>name</varname> argument to
       deduce the name of target file (see &a-link-target;) and to generate
-      alias for the created target (see &a-link-alias;). 
+      alias for the created target (see &a-link-alias;).
     </para>
     <para>
-      Let's say you have a scientific paper in TeX format and you assigned 
+      Let's say you have a scientific paper in TeX format and you assigned
       symbolic name <literal>foo</literal> to its project. The document is thus
       compiled with <literal>TeXASDoc('foo')</literal>. By default it will
       produce <filename>foo.dvi</filename> from <filename>foo.tex</filename>
@@ -316,7 +316,7 @@
     </para>
     <para>
       In the next line of your SConscript you may use the same name in another
-      TeXAS builder to handle other aspect of your project. Take 
+      TeXAS builder to handle other aspect of your project. Take
       <literal>env.TeXASTarGz('foo',...)</literal> as example.  It will
       create <filename>foo.tar.gz</filename> archive containing distributable
       sources for your paper. The package creation will be available via scons
@@ -456,7 +456,7 @@
       <literal>'DVI'</literal> selects SCons stock <function>DVI</function>
       builder, <literal>'PDF'</literal> selects SCons stock
       <function>PDF</function> builder and <literal>'DVIPDFM'</literal> selects
-      <function>DVIPDFM</function> builder implemented in 
+      <function>DVIPDFM</function> builder implemented in
       <link xl:href="http://sourceforge.net/projects/scons-dvipdfm/">
       <literal>SCons dvipdfm tool</literal></link> by Pawel Tomulik.
     </para>
@@ -472,7 +472,7 @@
       of these.
     </para>
     <para>
-      For example, the effect of 
+      For example, the effect of
       <programlisting>
 env.TeXASDoc(..., deps='bar')
       </programlisting>
@@ -484,7 +484,7 @@ env.Depends(dvi, 'bar')
     </para>
     <para>See &e-link-TeXASDoc-dvi_deps;.</para>
   </listitem>
-  </varlistentry>  
+  </varlistentry>
   <varlistentry xml:id="a-out_dir">
   <term><varname>out_dir</varname></term>
   <listitem>
@@ -503,7 +503,7 @@ env.Depends(dvi, 'bar')
       suffix for TeXAS builders which deduce target name from the &a-link-name;
       parameter. For example, the DVI builder uses <literal>'.dvi'</literal>
       suffix by default, if you do <literal>env.TeXASDoc('foo')</literal>, the
-      target name will be set to <filename>foo.dvi</filename>. You may provide 
+      target name will be set to <filename>foo.dvi</filename>. You may provide
       <varname>suffix</varname> argument (for example
       <literal>env.TeXASDoc('foo', suffix='.dv2')</literal>) to produce target
       file with custom suffix (<filename>foo.dv2</filename> in this case).
@@ -579,9 +579,9 @@ env.Depends(dvi, 'bar')
     one of DVI, PDF, or DVIPDFM builders, depending on user's choice. The
     default builder is DVI.
   </para>
- 
+
   <!--
-    Example: TeXASDoc/foo_tex 
+    Example: TeXASDoc/foo_tex
   -->
 
   <example xml:id='e-TeXASDoc-foo_tex'>
@@ -590,7 +590,7 @@ env.Depends(dvi, 'bar')
       In most of the following examples we will use the TeX file named
       <filename>foo.tex</filename>:
     </para>
-    <programlisting><![CDATA[ 
+    <programlisting><![CDATA[
   \documentclass{article}
   \title{Hello world}
   \author{John Smith}
@@ -603,14 +603,14 @@ env.Depends(dvi, 'bar')
   </example>
 
   <!--
-    Example: TeXASDoc/simple1 
+    Example: TeXASDoc/simple1
   -->
 
   <example xml:id='e-TeXASDoc-dvi_simple1'>
     <title>TeXASDoc, simple usage</title>
-    <para> 
+    <para>
       Let's say, you wish to compile the <filename>foo.tex</filename> from
-      &e-link-TeXASDoc-foo_tex; in order to create <filename>foo.dvi</filename>. 
+      &e-link-TeXASDoc-foo_tex; in order to create <filename>foo.dvi</filename>.
       To do this, you may write a <filename>SConstruct</filename> script as below:
     </para>
     <programlisting><![CDATA[  # SConstruct
@@ -620,7 +620,7 @@ env.Depends(dvi, 'bar')
     <para>
       Note, that the &b-link-TeXASDoc; with <literal>builder='DVI'</literal>
       generates automatically an alias named <literal>foo-dvi</literal>, so that you
-      can compile your document with the command: 
+      can compile your document with the command:
       <command>scons</command> <parameter>foo-dvi</parameter>
     </para>
     <para>
@@ -644,7 +644,7 @@ env.Depends(dvi, 'bar')
 
   <example xml:id='e-TeXASDoc-pdf_simple1'>
     <title>TeXASDoc, choosing PDF builder</title>
-    <para> 
+    <para>
       Let's compile the same source file <filename>foo.tex</filename> from
       &e-link-TeXASDoc-foo_tex; but this time using PDF builder to produce PDF
       file instead of DVI. For this, we provide the &a-link-builder; argument to
@@ -663,7 +663,7 @@ env.Depends(dvi, 'bar')
     <para>
       In this example the builder generates an alias
       <literal>foo-pdf</literal>, so that you can create the document with the
-      command: 
+      command:
       <command>scons</command> <parameter>foo-pdf</parameter>
     </para>
   </example>
@@ -690,7 +690,7 @@ env.Depends(dvi, 'bar')
     </programlisting>
     <para>
       Now, you can create the document <filename>foo.dvi</filename> with the
-      command: 
+      command:
       <command>scons</command> <parameter>customalias</parameter>
     </para>
   </example>
@@ -715,7 +715,7 @@ env.Depends(dvi, 'bar')
     </programlisting>
     <para>
       Now, you can create the document <filename>foo.dvi</filename> with the
-      command: 
+      command:
       <command>scons</command> <parameter>foo-sfx</parameter>
     </para>
   </example>
@@ -751,7 +751,7 @@ env.Depends(dvi, 'bar')
     </para>
     <programlisting><![CDATA[  # SConstruct
   env = Environment(tools = ['texas'])
-  dvi = env.TeXASDoc('foo', 'foo.tex', 
+  dvi = env.TeXASDoc('foo', 'foo.tex',
                      deps = ['bar.txt', 'geez.txt']) ]]>
     </programlisting>
   </example>
@@ -802,7 +802,7 @@ env.Depends(dvi, 'bar')
     </programlisting>
     <para>
       Note, that this script also creates an alias <literal>foo-dvi</literal>,
-      so that you can create the document with the command: 
+      so that you can create the document with the command:
       <command>scons</command> <parameter>foo-dvi</parameter>
     </para>
   </example>
@@ -836,7 +836,7 @@ env.Depends(dvi, 'bar')
     </para>
     <para>
       Note, that this script also creates an alias <literal>foo-pdf</literal>,
-      so that you can create the document with the command: 
+      so that you can create the document with the command:
       <command>scons</command> <parameter>foo-pdf</parameter>
     </para>
   </example>
@@ -865,7 +865,7 @@ env.Depends(dvi, 'bar')
     </programlisting>
     <para>
       Note, that this script also creates an alias <literal>foo-pdf</literal>,
-      so that you can create the document with the command: 
+      so that you can create the document with the command:
       <command>scons</command> <parameter>foo-pdf</parameter>
     </para>
   </example>
