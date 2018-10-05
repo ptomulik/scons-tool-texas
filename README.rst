@@ -92,18 +92,18 @@ DOWNLOAD DEPENDENCIES FROM EXTERNAL REPOSITORIES
 Some files from external projects need to be downloaded into the
 development tree (they are usually not a part of any installable package). The
 files are obtainable from external repositories, and may be easily downloaded
-on GNU systems with the script ``bin/download-deps.sh`` ::
+on GNU systems with the script ``bin/downloads.py`` ::
 
-    bin/download-deps.sh
+    bin/download.py
 
 The development tree may be later cleaned-up from the downloaded files by::
 
-    bin/delete-deps.sh
+    bin/downloads.py --clean
 
 Particular projects, that this project depends on, are mentioned in the
-following subsections. You may look through it if the above scripts do not
+following subsections. You may look through it if the above script does not
 work well on your platform. Otherwise, all of the following dependencies
-are handled by ``download-deps.sh`` and ``delete-deps.sh`` scripts.
+are handled by ``downloads.py``.
 
 All downloaded files are ignored by ``.gitignore``, so you don't have to worry
 about deleting them before doing commits.
@@ -122,15 +122,13 @@ to the top-level source directory)
    ``dvipdfm.py``            ``site_scons/site_tools/dvipdfm.py``
  ========================= ==================================================
 
-On GNU systems you may download it with the script
-``bin/download-dvipdfm-tool.sh``::
+On GNU systems you may download it with::
 
-    bin/download-dvipdfm-tool.sh
+    bin/downloads.py scons-dvipdfm
 
-The tool may be further removed from the development tree with the script
-``bin/delete-dvipdfm-tool.sh``::
+The tool may be further removed from the development tree with::
 
-    bin/download-dvipdfm-tool.sh
+    bin/downloads.py --clean scons-dvipdfm
 
 SCONS KPSEWHICH TOOL
 ^^^^^^^^^^^^^^^^^^^^
@@ -146,15 +144,14 @@ to the top-level source directory)
    ``kpsewhich.py``         ``site_scons/site_tools/dvipdfm.py``
  ========================= ==================================================
 
-On GNU systems you may download it with the script
-``bin/download-kpsewhich-tool.sh``::
+On GNU systems you may download it with::
 
-    bin/download-kpsewhich-tool.sh
+    bin/downloads.py scons-kpsewhich
 
-The tool may be further removed from the development tree with the script
-``bin/delete-kpsewhich-tool.sh``::
+The tool may be further removed from the development tree with::
 
-    bin/download-kpsewhich-tool.sh
+    bin/downloads.py --clean scons-kpsewhich
+
 
 TESTING FRAMEWORK
 ^^^^^^^^^^^^^^^^^
@@ -168,21 +165,21 @@ source directory)
  ========================= ==================================================
   source file/directory                   target file/directory
  ========================= ==================================================
-  ``QMTest/``               ``QMTest/``
+  ``testing/``              ``testing/``
  ------------------------- --------------------------------------------------
   ``runtest.py``            ``runtest.py``
  ========================= ==================================================
 
-On GNU system you may use the ``bin/download-test-framework.sh``  script to
-download the testing framework (requires ``hg`` to be installed on your system)::
+On GNU system you may use the ``bin/downloads.py``  script to download the
+testing framework::
 
-    bin/download-test-framework.sh
+    bin/downloads.py scons-test
 
-This script downloads and copies to the top-level directory the ``QMTest``
+This script downloads and copies to the top-level directory the ``testing``
 package and ``runtest.py`` script from the repository. The test framework may
-be later removed with the ``bin/delete-test-framework.sh`` script::
+be later removed with::
 
-    bin/delete-test-framework.sh
+    bin/downloads.py --clean scons-test
 
 You may also delete manually files/directories comprising the framework.
 
@@ -205,14 +202,14 @@ placed as shown in table relative to the top-level source directory)
   ``docbook-xsl-<ver>/``    ``site_scons/site_tools/docbook/docbook-xsl-<ver>``
  ========================= =====================================================
 
-On GNU system you may use the ``bin/download-docbook-tool.sh``  script to
-download the docbook tool (requires ``hg`` to be installed on your system)::
+On GNU system you may use the ``bin/downloads.py``  script to download the
+docbook tool::
 
-    bin/download-docbook-tool.sh
+    bin/downloads.py scons-docbook
 
 The tool may be later removed with the ``bin/delete-docbook-tool.sh`` script::
 
-    bin/delete-test-framework.sh
+    bin/downloads.py --clean scons-docbook
 
 You may also delete manually files/directories comprising the tool package.
 
@@ -221,7 +218,7 @@ RUNNING TESTS
 
 To run all the tests type::
 
-    SCONS_EXTERNAL_TEST=1 python runtest.py -a
+    python3 runtest.py -e -a
 
 This requires the presence of the testing framework in the development tree.
 

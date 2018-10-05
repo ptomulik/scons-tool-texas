@@ -63,23 +63,11 @@ def scons_dvipdfm_version_string(s):
         raise argparse.ArgumentTypeError('wrong version %r, supported versions are: %s' % (s, supported))
     return s
 
-## def scons_gnuplot_version_string(s):
-##     if not s in _scons_gnuplot_versions:
-##         supported = ', '.join(["'%s'" % v for v in  _scons_gnuplot_versions])
-##         raise argparse.ArgumentTypeError('wrong version %r, supported versions are: %s' % (s, supported))
-##     return s
-
 def scons_kpsewhich_version_string(s):
     if not s in _scons_kpsewhich_versions:
         supported = ', '.join(["'%s'" % v for v in  _scons_kpsewhich_versions])
         raise argparse.ArgumentTypeError('wrong version %r, supported versions are: %s' % (s, supported))
     return s
-
-## def scons_texas_version_string(s):
-##     if not s in _scons_texas_versions:
-##         supported = ', '.join(["'%s'" % v for v in  _scons_texas_versions])
-##         raise argparse.ArgumentTypeError('wrong version %r, supported versions are: %s' % (s, supported))
-##     return s
 
 def untar(tar, **kw):
     # Options
@@ -132,7 +120,7 @@ def dload_scons_test(**kw):
 
     if clean:
         info("cleaning scons-test", **kw)
-        for f in ['runtest.py', 'QMTest']:
+        for f in ['runtest.py', 'testing']:
             ff = os.path.join(destdir,f)
             if os.path.exists(ff):
                 info("removing '%s'" % ff, **kw)
@@ -142,9 +130,9 @@ def dload_scons_test(**kw):
                     os.remove(ff)
         return 0
 
-    url = "https://bitbucket.org/scons/scons/get/%s.tar.gz" % ver
+    url = "https://github.com/scons/scons/archive/%s.tar.gz" % ver
     info("downloading '%s' -> '%s'" % (url, destdir))
-    member_name_filter = lambda s : re.match('(?:^runtest\.py$|QMTest/)', s)
+    member_name_filter = lambda s : re.match('(?:^runtest\.py$|testing/)', s)
     urluntar(url, path = destdir, strip_components = 1, member_name_filter = member_name_filter)
     return 0
 
@@ -208,39 +196,6 @@ def dload_scons_dvipdfm(**kw):
     urluntar(url, path = destdir, strip_components = 1, member_name_filter = member_name_filter)
     return 0
 
-## def dload_scons_gnuplot(**kw):
-##     try: ver = kw['scons_gnuplot_version']
-##     except KeyError: ver = _default_scons_gnuplot_version
-## 
-##     clean = False
-##     try: clean = kw['clean']
-##     except KeyError: pass
-## 
-##     destdir = os.path.join(_topsrcdir, 'site_scons', 'site_tools')
-## 
-##     if clean:
-##         info("cleaning scons-gnuplot", **kw)
-##         content = ['gnuplot']
-##         for f in content:
-##             ff = os.path.join(destdir, f)
-##             if os.path.exists(ff):
-##                 info("removing '%s'" % ff, **kw)
-##                 if os.path.isdir(ff):
-##                     shutil.rmtree(ff)
-##                 else:
-##                     os.remove(ff)
-##         return 0
-## 
-##     if not os.path.exists(destdir):
-##         info("creating '%s'" % destdir, **kw)
-##         os.makedirs(destdir)
-## 
-##     url = "https://github.com/ptomulik/scons-tool-gnuplot/archive/%s.tar.gz" % ver
-##     info("downloading '%s' -> '%s'" % (url, destdir))
-##     member_name_filter = lambda s : re.match('^gnuplot/', s)
-##     urluntar(url, path = destdir, strip_components = 1, member_name_filter = member_name_filter)
-##     return 0
-
 def dload_scons_kpsewhich(**kw):
     try: ver = kw['scons_kpsewhich_version']
     except KeyError: ver = _default_scons_kpsewhich_version
@@ -253,7 +208,7 @@ def dload_scons_kpsewhich(**kw):
 
     if clean:
         info("cleaning scons-kpsewhich", **kw)
-        content = ['kpsewhich.py']
+        content = ['kpsewhich']
         for f in content:
             ff = os.path.join(destdir, f)
             if os.path.exists(ff):
@@ -270,42 +225,9 @@ def dload_scons_kpsewhich(**kw):
 
     url = "https://github.com/ptomulik/scons-tool-kpsewhich/archive/%s.tar.gz" % ver
     info("downloading '%s' -> '%s'" % (url, destdir))
-    member_name_filter = lambda s : re.match('(?:^kpsewhich.py$)', s)
+    member_name_filter = lambda s : re.match(r'(?:^kpsewhich/)', s)
     urluntar(url, path = destdir, strip_components = 1, member_name_filter = member_name_filter)
     return 0
-
-## def dload_scons_texas(**kw):
-##     try: ver = kw['scons_texas_version']
-##     except KeyError: ver = _default_scons_texas_version
-## 
-##     clean = False
-##     try: clean = kw['clean']
-##     except KeyError: pass
-## 
-##     destdir = os.path.join(_topsrcdir, 'site_scons', 'site_tools')
-## 
-##     if clean:
-##         info("cleaning scons-texas", **kw)
-##         content = ['texas']
-##         for f in content:
-##             ff = os.path.join(destdir, f)
-##             if os.path.exists(ff):
-##                 info("removing '%s'" % ff, **kw)
-##                 if os.path.isdir(ff):
-##                     shutil.rmtree(ff)
-##                 else:
-##                     os.remove(ff)
-##         return 0
-## 
-##     if not os.path.exists(destdir):
-##         info("creating '%s'" % destdir, **kw)
-##         os.makedirs(destdir)
-## 
-##     url = "https://github.com/ptomulik/scons-tool-texas/archive/%s.tar.gz" % ver
-##     info("downloading '%s' -> '%s'" % (url, destdir))
-##     member_name_filter = lambda s : re.match('^texas/', s)
-##     urluntar(url, path = destdir, strip_components = 1, member_name_filter = member_name_filter)
-##     return 0
 
 # The script...
 _script = os.path.basename(sys.argv[0])
@@ -316,14 +238,22 @@ _topsrcdir = os.path.realpath(os.path.join(_scriptdir, '..'))
 _all_packages = [ 'scons-test',
                   'scons-docbook',
                   'scons-dvipdfm',
-##                  'scons-gnuplot',
                   'scons-kpsewhich',
-##                  'scons-texas'
                 ]
 
+_default_packages = [ 'scons-test',
+                      'scons-dvipdfm',
+                      'scons-kpsewhich',
+                    ]
+
 # scons
-_scons_versions = ['tip',
-                   '2.4.0', 
+_scons_versions = ['master',
+                   '3.0.1',
+                   '3.0.0',
+                   '2.5.1',
+                   '2.5.0',
+                   '2.4.1',
+                   '2.4.0',
                    '2.3.6',
                    '2.3.5',
                    '2.3.4',
@@ -347,17 +277,9 @@ _default_scons_docbook_version = _scons_docbook_versions[0]
 _scons_dvipdfm_versions = [ 'master' ]
 _default_scons_dvipdfm_version = _scons_dvipdfm_versions[0]
 
-## # scons-gnuplot
-## _scons_gnuplot_versions = [ 'master' ]
-## _default_scons_gnuplot_version = _scons_gnuplot_versions[0]
-
 # scons-kpsewhich
 _scons_kpsewhich_versions = [ 'master' ]
 _default_scons_kpsewhich_version = _scons_kpsewhich_versions[0]
-
-## # scons-texas
-## _scons_texas_versions = [ 'master' ]
-## _default_scons_texas_version = _scons_texas_versions[0]
 
 _parser = argparse.ArgumentParser(
         prog=_script,
@@ -396,26 +318,16 @@ _parser.add_argument('--scons-dvipdfm-version',
                       default=_default_scons_dvipdfm_version,
                       metavar='VER',
                       help='version of SCons dvipdfm tool to be downloaded')
-## _parser.add_argument('--scons-gnuplot-version',
-##                       type=scons_gnuplot_version_string,
-##                       default=_default_scons_gnuplot_version,
-##                       metavar='VER',
-##                       help='version of SCons gnuplot tool to be downloaded')
 _parser.add_argument('--scons-kpsewhich-version',
                       type=scons_kpsewhich_version_string,
                       default=_default_scons_kpsewhich_version,
                       metavar='VER',
                       help='version of SCons kpsewhich tool to be downloaded')
-## _parser.add_argument('--scons-texas-version',
-##                       type=scons_texas_version_string,
-##                       default=_default_scons_texas_version,
-##                       metavar='VER',
-##                       help='version of SCons texas tool to be downloaded')
 _parser.add_argument('packages',
                       metavar='PKG',
                       type=str,
-                      nargs='*', 
-                      default = _all_packages,
+                      nargs='*',
+                      default = _default_packages,
                       help='package to download (%s)' % ', '.join(_all_packages))
 
 _args = _parser.parse_args()
@@ -427,12 +339,8 @@ for pkg in _args.packages:
         dload_scons_docbook(**vars(_args))
     elif pkg.lower() == 'scons-dvipdfm':
         dload_scons_dvipdfm(**vars(_args))
-##    elif pkg.lower() == 'scons-gnuplot':
-##        dload_scons_gnuplot(**vars(_args))
     elif pkg.lower() == 'scons-kpsewhich':
         dload_scons_kpsewhich(**vars(_args))
-##     elif pkg.lower() == 'scons-texas':
-##         dload_scons_texas(**vars(_args))
     else:
         warn("unsupported package: %r")
 

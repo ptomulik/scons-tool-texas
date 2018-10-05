@@ -45,6 +45,7 @@ __pycache__
 *.synctex.gz
 
 # Testing framework (downloaded from external source)
+/testing/
 /QMTest/
 /runtest.py
 
