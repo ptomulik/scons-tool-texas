@@ -1,6 +1,17 @@
 scons-tool-texas
 ================
 
+.. image:: https://badge.fury.io/py/scons-tool-texas.svg
+    :target: https://badge.fury.io/py/scons-tool-texas
+    :alt: PyPi package version
+
+.. image:: https://travis-ci.org/ptomulik/scons-tool-texas.svg?branch=master
+    :target: https://travis-ci.org/ptomulik/scons-tool-texas
+    :alt: Travis CI build status
+
+.. image:: https://ci.appveyor.com/api/projects/status/github/ptomulik/scons-tool-texas?svg=true
+    :target: https://ci.appveyor.com/project/ptomulik/scons-tool-texas
+
 This is a SCons tool (set) named TeX Automated with SCons (``TeXAS``). It
 wraps several SCons builders with the aim of simplifying compilation of ``TeX``
 projects. It brings several features, that you may find useful:
@@ -16,10 +27,61 @@ projects. It brings several features, that you may find useful:
 INSTALLATION
 ------------
 
-Copy the ``texas/`` directory to your project's ``site_scons/site_tools/`` or
-to ``~/.scons/site_scons/site_tools/`` (per user configuration). See SCons manual
-for details about installation of external tools. For full functionality you
-may also need to install the `SCons dvipdfm tool`_.
+There are few ways to install this tool for your project.
+
+From pypi_
+^^^^^^^^^^
+
+This method may be preferable if you build your project under a virtualenv. To
+add texas tool from pypi_, type (within your wirtualenv):
+
+.. code-block:: shell
+
+   pip install scons-tool-loader scons-tool-texas
+
+or, if your project uses pipenv_:
+
+.. code-block:: shell
+
+   pipenv install --dev scons-tool-loader scons-tool-texas
+
+Alternatively, you may add this to your ``Pipfile``
+
+.. code-block::
+
+   [dev-packages]
+   scons-tool-loader = "*"
+   scons-tool-texas = "*"
+
+
+The tool will be installed as a namespaced package ``sconstool.texas``
+in project's virtual environment. You may further use scons-tool-loader_
+to load the tool.
+
+As a git submodule
+^^^^^^^^^^^^^^^^^^
+
+#. Create new git repository:
+
+   .. code-block:: shell
+
+      mkdir /tmp/prj && cd /tmp/prj
+      touch README.rst
+      git init
+
+#. Add the `scons-tool-texas`_ as a submodule:
+
+   .. code-block:: shell
+
+      git submodule add git://github.com/ptomulik/scons-tool-texas.git site_scons/site_tools/texas
+
+#. For python 2.x create ``__init__.py`` in ``site_tools`` directory:
+
+   .. code-block:: shell
+
+      touch site_scons/site_tools/__init__.py
+
+   this will allow to directly import ``site_tools.texas`` (this may be required by other tools).
 
 USAGE EXAMPLE
 -------------
@@ -52,23 +114,6 @@ PREREQUISITES
 To perform certain activities, you may need the following packages (listed per
 task).
 
-TO DOWNLOAD DEPENDENCIES FROM EXTERNAL REPOSITORIES
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Sometimes it may be necessary to download files from other people's repositories,
-for example test framework is necessary to run tests. We have some scripts to
-automatize the download process, and they require the following software
-
-  - mercurial_ VCS (``hg``),
-  - git_ VCS (``git``).
-
-TO RUN TESTS
-^^^^^^^^^^^^
-
-  - `SCons test framework`_ by Dirk Baechle,
-  - `SCons dvipdfm tool`_ by Paweł Tomulik
-  - `SCons kpsewhich tool`_ by Paweł Tomulik
-
 TO GENERATE API DOCUMENTATION
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -82,146 +127,6 @@ TO GENERATE USER DOCUMENTATION
   - docbook-xml_,
   - xsltproc_,
 
-and (locally downloaded)
-
-  - `SCons docbook tool`_ by Dirk Baechle.
-
-DOWNLOAD DEPENDENCIES FROM EXTERNAL REPOSITORIES
-------------------------------------------------
-
-Some files from external projects need to be downloaded into the
-development tree (they are usually not a part of any installable package). The
-files are obtainable from external repositories, and may be easily downloaded
-on GNU systems with the script ``bin/downloads.py`` ::
-
-    bin/download.py
-
-The development tree may be later cleaned-up from the downloaded files by::
-
-    bin/downloads.py --clean
-
-Particular projects, that this project depends on, are mentioned in the
-following subsections. You may look through it if the above script does not
-work well on your platform. Otherwise, all of the following dependencies
-are handled by ``downloads.py``.
-
-All downloaded files are ignored by ``.gitignore``, so you don't have to worry
-about deleting them before doing commits.
-
-SCONS DVIPDFM TOOL
-^^^^^^^^^^^^^^^^^^
-
-The ``TeXAS`` tool depends on `SCons dvipdfm tool`_, which is not available in
-the SCons_ core (at least not in 2.3.0 and earlier versions). The following
-files/directories need to be downloaded (and placed as shown in table relative
-to the top-level source directory)
-
- ========================= ==================================================
-  source file/directory                   target file/directory
- ========================= ==================================================
-   ``dvipdfm.py``            ``site_scons/site_tools/dvipdfm.py``
- ========================= ==================================================
-
-On GNU systems you may download it with::
-
-    bin/downloads.py scons-dvipdfm
-
-The tool may be further removed from the development tree with::
-
-    bin/downloads.py --clean scons-dvipdfm
-
-SCONS KPSEWHICH TOOL
-^^^^^^^^^^^^^^^^^^^^
-
-The ``TeXAS`` tool depends on `SCons kpsewhich tool`_, which is not available
-in the SCons_ core (at least not in 2.3.0 and earlier versions). The following
-files/directories need to be downloaded (and placed as shown in table relative
-to the top-level source directory)
-
- ========================= ==================================================
-  source file/directory                   target file/directory
- ========================= ==================================================
-   ``kpsewhich.py``         ``site_scons/site_tools/dvipdfm.py``
- ========================= ==================================================
-
-On GNU systems you may download it with::
-
-    bin/downloads.py scons-kpsewhich
-
-The tool may be further removed from the development tree with::
-
-    bin/downloads.py --clean scons-kpsewhich
-
-
-TESTING FRAMEWORK
-^^^^^^^^^^^^^^^^^
-
-If you wish to run end-to-end tests for this tool, download the testing
-framework for scons extensions/tools (currently from Dirk Baechle's repository
-`SCons test framework`_ hosted on bitbucket.org). The following files/directories
-need to be downloaded (and placed as shown in table relative to the top-level
-source directory)
-
- ========================= ==================================================
-  source file/directory                   target file/directory
- ========================= ==================================================
-  ``testing/``              ``testing/``
- ------------------------- --------------------------------------------------
-  ``runtest.py``            ``runtest.py``
- ========================= ==================================================
-
-On GNU system you may use the ``bin/downloads.py``  script to download the
-testing framework::
-
-    bin/downloads.py scons-test
-
-This script downloads and copies to the top-level directory the ``testing``
-package and ``runtest.py`` script from the repository. The test framework may
-be later removed with::
-
-    bin/downloads.py --clean scons-test
-
-You may also delete manually files/directories comprising the framework.
-
-
-SCONS DOCBOOK TOOL
-^^^^^^^^^^^^^^^^^^
-
-If you wish to generate user's guide, you need to download locally the `scons
-docbook tool`_. It is obtainable from Dirk Baechle's repository hosted on
-bitbucket.org. The following files/directories need to be downloaded (and
-placed as shown in table relative to the top-level source directory)
-
- ========================= =====================================================
-  source file/directory                   target file/directory
- ========================= =====================================================
-  ``__init__.py``           ``site_scons/site_tools/docbook/__init__.py``
- ------------------------- -----------------------------------------------------
-  ``utils/``                ``site_scons/site_tools/docbook/utils``
- ------------------------- -----------------------------------------------------
-  ``docbook-xsl-<ver>/``    ``site_scons/site_tools/docbook/docbook-xsl-<ver>``
- ========================= =====================================================
-
-On GNU system you may use the ``bin/downloads.py``  script to download the
-docbook tool::
-
-    bin/downloads.py scons-docbook
-
-The tool may be later removed with the ``bin/delete-docbook-tool.sh`` script::
-
-    bin/downloads.py --clean scons-docbook
-
-You may also delete manually files/directories comprising the tool package.
-
-RUNNING TESTS
--------------
-
-To run all the tests type::
-
-    python3 runtest.py -e -a
-
-This requires the presence of the testing framework in the development tree.
-
 GENERATING DOCUMENTATION
 ------------------------
 
@@ -233,7 +138,7 @@ API DOCUMENTATION
 
 To generate API documentation type::
 
-    scons api-doc
+    pipenv run scons api-doc
 
 The generated API documentation will be written to ``build/doc/api/``.
 
@@ -242,7 +147,7 @@ USER MANUAL
 
 To generate user manual type::
 
-    scons user-doc
+    pipenv run scons user-doc
 
 The generated documentation will be written to ``build/doc/user/``.
 
@@ -280,3 +185,6 @@ SOFTWARE
 .. _git: http://git-scm.com/
 .. _SCons dvipdfm tool: https://github.com/ptomulik/scons-tool-dvipdfm
 .. _SCons kpsewhich tool: https://github.com/ptomulik/scons-tool-kpsewhich
+.. _scons-tool-loader: https://github.com/ptomulik/scons-tool-loader
+.. _pipenv: https://pipenv.readthedocs.io/
+.. _pypi: https://pypi.org/

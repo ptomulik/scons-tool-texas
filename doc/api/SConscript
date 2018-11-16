@@ -22,15 +22,27 @@
 
 Import(['env'])
 
+import os
+import sys
+
+def running_in_virtualenv():
+    return (hasattr(sys, 'real_prefix') or
+            (hasattr(sys, 'base_prefix') and sys.base_prefix != sys.prefix))
+
+def is_scons_dir(path):
+    return os.path.isfile(os.path.join(path, 'SCons', '__init__.py'))
+
+def scons_path():
+    return [x for x in sys.path if is_scons_dir(x)]
+
 epydoc = env.Detect(['epydoc'])
 if epydoc:
-    import sys
-    path = ':'.join(sys.path)
+    path = ':'.join([str(env.Dir('#/sconstool'))] + scons_path())
     epydocflags = '-v --html --css grayscale --inheritance listed'
     epydoccom = 'PYTHONPATH=%s %s -o $TARGET.dir %s %s' \
-            % (path,epydoc,epydocflags, 'texas')
+            % (path, epydoc, epydocflags, 'texas')
     target = ['index.html']
-    source = [env.Glob('#texas/*.py')]
+    source = [env.Glob('#/*.py')]
     api_doc = env.Command(target, source, epydoccom)
     env.AlwaysBuild(env.Alias('api-doc', api_doc))
     env.Ignore('.', target)

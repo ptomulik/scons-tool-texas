@@ -1,0 +1,31 @@
+environment:
+  matrix:
+    - PYTHON: "C:\\Python27\\python"
+    - PYTHON: "C:\\Python35\\python"
+    - PYTHON: "C:\\Python36\\python"
+    - PYTHON: "C:\\Python37\\python"
+
+cache:
+  - "%USERPROFILE%\\TeXLive -> bin\\install-tex.py, bin\\texlive-default-win32.profile"
+install:
+  - "%PYTHON% -m pip install --user -U pip"
+  - "%PYTHON% -m pip install --user pipenv"
+  - "%PYTHON% -m pipenv install --dev"
+  - "%PYTHON% bin\\downloads.py"
+  - "%PYTHON% bin\\install-tex.py --repository=http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet"
+  - IF NOT EXIST %USERPROFILE%\TeXLive ( %PYTHON% bin\install-tex.py --repository=http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet )
+  - IF NOT EXIST %USERPROFILE%\TeXLive\bin\win32\dvipdf.bat ( echo dvipdfm -o %%2 %%1 2^>^&1 > %USERPROFILE%\TeXLive\bin\win32\dvipdf.bat )
+  - type %USERPROFILE%\TeXLive\bin\win32\dvipdf.bat
+    # We need access to TeXLive binaries
+  - SET "SCONS_PREPEND_PATH=%USERPROFILE%\\TeXLive\\bin\\win32"
+
+before_test:
+  - "%PYTHON% -m pipenv --version"
+  - "%PYTHON% -m pipenv run python --version"
+  - "%PYTHON% -m pipenv run scons --version"
+
+build: off
+
+test_script:
+  #  - "%PYTHON% -m pipenv run python -m unittest discover -t . -s test\\unit"
+  - cmd: "%PYTHON% -m pipenv run python runtest -e test\\system"

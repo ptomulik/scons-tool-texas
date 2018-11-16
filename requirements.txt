@@ -1,0 +1,5 @@
+-i https://pypi.org/simple
+scons-tool-archives==0.1.1
+scons-tool-dvipdfm==0.1.0
+scons-tool-kpsewhich==0.1.1
+scons-tool-util==0.1.10

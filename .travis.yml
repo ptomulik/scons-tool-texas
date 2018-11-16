@@ -1,0 +1,29 @@
+language:
+  python
+
+python:
+  - 2.7
+  - 3.5
+  - 3.6
+  - 3.7-dev
+
+addons:
+  apt:
+    packages:
+      - texlive-latex-base
+      - ghostscript
+
+install:
+  - pip install -U pip
+  - pip --version
+  - pip install -r requirements.txt
+  - pip install -r requirements-dev.txt
+  - python bin/downloads.py
+
+
+before_script:
+  - which dvipdf
+  - which python
+
+script:
+  - python runtest -e test/system

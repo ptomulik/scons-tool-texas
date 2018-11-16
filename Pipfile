@@ -1,0 +1,18 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+scons-tool-util = ">=0.1.10"
+scons-tool-kpsewhich = ">=0.1.1"
+scons-tool-dvipdfm = ">=0.1.0"
+scons-tool-archives = ">=0.1.1"
+
+[dev-packages]
+twine = "*"
+scons-tool-loader = ">=0.1.9"
+scons = "*"
+
+[requires]
+python = "2.7"
