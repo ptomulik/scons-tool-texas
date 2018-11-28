@@ -57,7 +57,7 @@ setup(
         package_dir={'sconstool.texas': '.'},
         packages=['sconstool.texas'],
         namespace_packages=['sconstool'],
-        description='Dvipdfm tool for SCons',
+        description='TeX Automated with SCons',
         long_description=readme,
         long_description_content_type='text/x-rst',
         url='https://github.com/ptomulik/scons-tool-texas',
