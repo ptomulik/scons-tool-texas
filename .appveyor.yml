@@ -5,6 +5,10 @@ environment:
     - PYTHON: "C:\\Python36\\python"
     - PYTHON: "C:\\Python37\\python"
 
+matrix:
+  allow_failures:
+    - PYTHON: "C:\\Python27\\python"
+
 cache:
   - "%USERPROFILE%\\TeXLive -> bin\\install-tex.py, bin\\texlive-default-win32.profile"
 install:
