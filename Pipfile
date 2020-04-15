@@ -10,9 +10,9 @@ scons-tool-dvipdfm = ">=0.1.0"
 scons-tool-archives = ">=0.1.1"
 
 [dev-packages]
+scons-select = { path = "./deps/scons-select" }
 twine = "*"
 scons-tool-loader = ">=0.1.9"
-scons = "*"
 
 [requires]
 python = "2.7"
