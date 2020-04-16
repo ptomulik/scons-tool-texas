@@ -153,7 +153,7 @@ The generated documentation will be written to ``build/doc/user/``.
 
 LICENSE
 -------
-Copyright (c) 2013-2018 by Pawel Tomulik
+Copyright (c) 2013-2020 by Paweł Tomulik
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

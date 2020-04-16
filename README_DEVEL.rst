@@ -9,7 +9,7 @@ Initialization
 On a fresh clone do::
 
    pipenv install --dev
-   pipenv run bin/downloads.py
+   pipenv run python bin/downloads.py
 
 Running tests
 -------------
@@ -41,26 +41,11 @@ Uploading to pypi.org_
 
    pipenv run twine upload dist/*
 
-Synchronize Pipfile.lock with requirements-dev.txt
---------------------------------------------------
-
-Python 3:
-
-.. code:: shell
-
-   pipenv lock -r --dev > requirements3-dev.txt
-
-Python 2:
-
-.. code:: shell
-
-   pipenv lock -r --dev > requirements2-dev.txt
-
 
 LICENSE
 -------
 
-Copyright (c) 2014-2018 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
+Copyright (c) 2014-2020 by Pawel Tomulik <ptomulik@meil.pw.edu.pl>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

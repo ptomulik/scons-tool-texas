@@ -1,9 +1,13 @@
 environment:
   matrix:
-    - PYTHON: "C:\\Python27\\python"
-    - PYTHON: "C:\\Python35\\python"
-    - PYTHON: "C:\\Python36\\python"
-    - PYTHON: "C:\\Python37\\python"
+    - PYTHON: "C:\\Python27-x64"
+      PYPATH: "%APPDATA%\\Python\\Scripts;%PYTHON%;%PYTHON%\\Scripts"
+    - PYTHON: "C:\\Python35-x64"
+      PYPATH: "%APPDATA%\\Python\\Python35\\Scripts;%PYTHON%;%PYTHON%\\Scripts"
+    - PYTHON: "C:\\Python36-x64"
+      PYPATH: "%APPDATA%\\Python\\Python36\\Scripts;%PYTHON%;%PYTHON%\\Scripts"
+    - PYTHON: "C:\\Python37-x64"
+      PYPATH: "%APPDATA%\\Python\\Python37\\Scripts;%PYTHON%;%PYTHON%\\Scripts"
 
 matrix:
   allow_failures:
@@ -12,24 +16,26 @@ matrix:
 cache:
   - "%USERPROFILE%\\TeXLive -> bin\\install-tex.py, bin\\texlive-default-win32.profile"
 install:
-  - "%PYTHON% -m pip install --user -U pip"
-  - "%PYTHON% -m pip install --user pipenv"
-  - "%PYTHON% -m pipenv install --dev"
-  - "%PYTHON% bin\\downloads.py"
-  - "%PYTHON% bin\\install-tex.py --repository=http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet"
-  - IF NOT EXIST %USERPROFILE%\TeXLive ( %PYTHON% bin\install-tex.py --repository=http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet )
+  - SET "PATH=%PYPATH%;%PATH%"
+  - SET "TESTCOMMON_PASS_SKIPS=1"
+  - python -m pip install -U pip
+  - python -m pip install -U virtualenv
+  - python -m pip install -U pipenv
+  - python -m pipenv install --dev
+  - python "bin\\downloads.py"
+  - python "bin\\install-tex.py" --repository=http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet
+  - IF NOT EXIST %USERPROFILE%\TeXLive ( python bin\install-tex.py --repository=http://ctan.math.washington.edu/tex-archive/systems/texlive/tlnet )
   - IF NOT EXIST %USERPROFILE%\TeXLive\bin\win32\dvipdf.bat ( echo dvipdfm -o %%2 %%1 2^>^&1 > %USERPROFILE%\TeXLive\bin\win32\dvipdf.bat )
   - type %USERPROFILE%\TeXLive\bin\win32\dvipdf.bat
     # We need access to TeXLive binaries
   - SET "SCONS_PREPEND_PATH=%USERPROFILE%\\TeXLive\\bin\\win32"
 
 before_test:
-  - "%PYTHON% -m pipenv --version"
-  - "%PYTHON% -m pipenv run python --version"
-  - "%PYTHON% -m pipenv run scons --version"
+  - python -m pipenv --version
+  - python -m pipenv run python --version
+  - python -m pipenv run scons --version
 
 build: off
 
 test_script:
-  #  - "%PYTHON% -m pipenv run python -m unittest discover -t . -s test\\unit"
-  - cmd: "%PYTHON% -m pipenv run python runtest -e test\\system"
+  - python -m pipenv run python runtest -e "test\\system"
